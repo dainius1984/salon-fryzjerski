@@ -22,17 +22,20 @@ const Navbar = ({ transparent = false }) => {
 
   // Dynamic classes based on transparent prop
   const navClasses = transparent 
-    ? "transition-all duration-300 text-white" 
+    ? "transition-all duration-500 text-white backdrop-blur-sm bg-black/5" 
     : "bg-gradient-to-r from-purple-900 to-purple-700 text-white shadow-md";
 
   return (
     <header className={`${navClasses} w-full z-50 ${transparent ? '' : 'fixed'}`}>
-      <nav className="container mx-auto px-4 py-4 flex items-center justify-between flex-wrap">
+      <nav className="container mx-auto px-4 py-5 flex items-center justify-between flex-wrap">
 
         {/* Logo/Site Title */}
         <div className="flex items-center flex-shrink-0 text-white mr-6">
           {/* Replace with your logo or salon name */}
-          <span className="font-semibold text-xl tracking-tight">Salon Fryzjerski u Małgosi</span>
+          <span className="font-serif text-2xl tracking-wider drop-shadow-md">
+            Salon Fryzjerski 
+            <span className="font-light italic ml-2">u Małgosi</span>
+          </span>
         </div>
 
         {/* Hamburger Icon (for mobile) */}
@@ -52,7 +55,7 @@ const Navbar = ({ transparent = false }) => {
               <a
                 key={link.name}
                 href={link.href} // Use Link component here if using React Router
-                className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-white/80 hover:underline mr-6 text-lg"
+                className="block mt-5 lg:inline-block lg:mt-0 text-white font-light tracking-wide hover:text-purple-200 hover:underline transition-all duration-300 mr-8 text-lg"
               >
                 {link.name}
               </a>
