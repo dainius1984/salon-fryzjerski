@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Slider from 'react-slick';
 import { Link } from 'react-router-dom';
 import { MapPinIcon, CalendarIcon } from '@heroicons/react/24/outline';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 // Import slick carousel styles
 import "slick-carousel/slick/slick.css";
@@ -54,6 +56,7 @@ const Galeria = () => {
 
   return (
     <>
+      <Navbar />
       {/* Hero Section - with padding to prevent overlap with fixed navbar */}
       <section className="pt-32 pb-16 md:pt-40 md:pb-20 bg-purple-900 text-white">
         <div className="container mx-auto px-4">
@@ -143,6 +146,8 @@ const Galeria = () => {
           </div>
         </div>
       </section>
+
+      <Footer />
 
       {/* Custom styles for the carousel */}
       <style jsx>{`
