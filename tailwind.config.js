@@ -15,7 +15,23 @@ export default {
             800: '#6b21a8',
           },
         },
+        fontFamily: {
+          'playfair': ['"Playfair Display"', 'serif'],
+          'lato': ['Lato', 'sans-serif'],
+        },
+        textShadow: {
+          'md': '2px 2px 4px rgba(0, 0, 0, 0.3)',
+        },
       },
     },
-    plugins: [],
+    plugins: [
+      function ({ addUtilities }) {
+        const newUtilities = {
+          '.text-shadow-md': {
+            textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)',
+          },
+        }
+        addUtilities(newUtilities)
+      }
+    ],
   }

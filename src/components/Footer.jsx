@@ -4,19 +4,22 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
   
   return (
-    <footer className="bg-gradient-to-r from-purple-900 to-purple-700 text-white">
-      {/* Top section with curved edge */}
-      <div className="w-full h-10 bg-gray-100 relative overflow-hidden">
-        <div className="absolute w-full h-20 bg-gradient-to-r from-purple-900 to-purple-700 rounded-tl-[100%] rounded-tr-[100%] -bottom-10"></div>
-      </div>
-      
-      {/* Main footer content */}
-      <div className="container mx-auto px-4 py-12">
+    <footer className="bg-purple-900 text-white py-8">
+      <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="flex flex-col items-center md:items-start">
+            <div className="flex items-center space-x-2 mb-4">
+              <img src="/img/logo.png" alt="Salon Fryzjerski u Gosii Logo" className="h-12 w-auto" />
+              <span className="text-xl font-playfair font-bold">Salon Fryzjerski u Gosii</span>
+            </div>
+            <p className="text-center md:text-left">
+              Profesjonalne usługi fryzjerskie w przyjaznej atmosferze.
+            </p>
+          </div>
           
           {/* Column 1: About */}
           <div className="mb-6 md:mb-0">
-            <h3 className="text-2xl font-bold mb-4 font-serif tracking-wide">Salon Fryzjerski u Małgosi</h3>
+            <h3 className="text-2xl font-bold mb-4 font-playfair tracking-wide">Salon Fryzjerski "U Małgosi"</h3>
             <p className="text-purple-100 mb-4 leading-relaxed">
               Profesjonalny salon fryzjerski oferujący kompleksowe usługi w przyjaznej atmosferze. Zapraszamy do odwiedzenia naszego salonu i skorzystania z naszych usług.
             </p>
@@ -36,14 +39,14 @@ const Footer = () => {
           
           {/* Column 2: Kontakt */}
           <div className="mb-6 md:mb-0">
-            <h3 className="text-xl font-bold mb-4 font-serif tracking-wide">Kontakt</h3>
+            <h3 className="text-xl font-bold mb-4 font-playfair tracking-wide">Kontakt</h3>
             <ul className="space-y-3 text-purple-100">
               <li className="flex items-start">
                 <svg className="h-6 w-6 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                <span>Moniuszki 2a, 55-080 Kąty Wrocławskie</span>
+                <span>ul. Osmańczyka 8 A, 54-058 Wrocław</span>
               </li>
               <li className="flex items-start">
                 <svg className="h-6 w-6 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -66,7 +69,7 @@ const Footer = () => {
           
           {/* Column 3: Szybkie linki */}
           <div>
-            <h3 className="text-xl font-bold mb-4 font-serif tracking-wide">Szybkie linki</h3>
+            <h3 className="text-xl font-bold mb-4 font-playfair tracking-wide">Szybkie linki</h3>
             <ul className="space-y-2 text-purple-100">
               <li>
                 <a href="/" className="hover:text-white hover:underline transition duration-300 flex items-center">
@@ -116,7 +119,7 @@ const Footer = () => {
       {/* Copyright section */}
       <div className="py-4 text-center border-t border-purple-600">
         <p className="text-sm text-purple-200">
-          &copy; {currentYear} Salon Fryzjerski u Małgosi. Wszystkie prawa zastrzeżone.
+          &copy; {currentYear} Salon Fryzjerski "U Małgosi". Wszystkie prawa zastrzeżone.
         </p>
       </div>
     </footer>
