@@ -4,6 +4,15 @@ import { Link } from 'react-router-dom';
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   
+  // Używamy dynamicznego importu/wymagania obrazów zamiast ścieżek relatywnych
+  // Alternatywnie możemy użyć publicznych URL lub przechowywać obrazy w folderze public
+  const paymentMethods = [
+    { name: 'Blik', id: 'blik' },
+    { name: 'Visa', id: 'visa' },
+    { name: 'Mastercard', id: 'mastercard' },
+    { name: 'PayU', id: 'payu' }
+  ];
+  
   return (
     <footer className="bg-purple-900 text-white py-8">
       <div className="container mx-auto px-4">
@@ -87,17 +96,30 @@ const Footer = () => {
           <div className="flex flex-col items-center">
             <h3 className="text-xl font-bold mb-6 font-playfair tracking-wide text-center">Metody płatności</h3>
             <div className="grid grid-cols-2 gap-4 max-w-[280px] mx-auto">
-              <div className="bg-purple-800/50 rounded-xl shadow-md flex items-center justify-center h-[100px] transition-transform transform hover:scale-105 hover:shadow-xl cursor-pointer p-5">
-                <img src="/img/Blik.svg" alt="Blik" className="w-full h-full object-contain" />
+              {/* Fallback ikony dla płatności zamiast obrazów */}
+              <div className="bg-purple-800/50 rounded-xl shadow-md flex flex-col items-center justify-center h-[100px] transition-transform transform hover:scale-105 hover:shadow-xl cursor-pointer p-5">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-white mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2z" />
+                </svg>
+                <span className="text-sm font-bold">BLIK</span>
               </div>
-              <div className="bg-purple-800/50 rounded-xl shadow-md flex items-center justify-center h-[100px] transition-transform transform hover:scale-105 hover:shadow-xl cursor-pointer p-5">
-                <img src="/img/Visa.png" alt="Visa" className="w-full h-full object-contain" />
+              <div className="bg-purple-800/50 rounded-xl shadow-md flex flex-col items-center justify-center h-[100px] transition-transform transform hover:scale-105 hover:shadow-xl cursor-pointer p-5">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-white mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                </svg>
+                <span className="text-sm font-bold">VISA</span>
               </div>
-              <div className="bg-purple-800/50 rounded-xl shadow-md flex items-center justify-center h-[100px] transition-transform transform hover:scale-105 hover:shadow-xl cursor-pointer p-5">
-                <img src="/img/Mastercard.png" alt="Mastercard" className="w-full h-full object-contain" />
+              <div className="bg-purple-800/50 rounded-xl shadow-md flex flex-col items-center justify-center h-[100px] transition-transform transform hover:scale-105 hover:shadow-xl cursor-pointer p-5">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-white mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                </svg>
+                <span className="text-sm font-bold">MASTERCARD</span>
               </div>
-              <div className="bg-purple-800/50 rounded-xl shadow-md flex items-center justify-center h-[100px] transition-transform transform hover:scale-105 hover:shadow-xl cursor-pointer p-5">
-                <img src="/img/PayU.png" alt="PayU" className="w-full h-full object-contain" />
+              <div className="bg-purple-800/50 rounded-xl shadow-md flex flex-col items-center justify-center h-[100px] transition-transform transform hover:scale-105 hover:shadow-xl cursor-pointer p-5">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-white mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2z" />
+                </svg>
+                <span className="text-sm font-bold">PAY U</span>
               </div>
             </div>
           </div>
