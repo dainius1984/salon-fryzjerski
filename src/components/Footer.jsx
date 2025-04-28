@@ -6,9 +6,9 @@ const Footer = () => {
   
   // Lista metod płatności z ich ścieżkami publicznymi
   const paymentImages = [
-    { name: 'BLIK', path: '/img/Blik.svg', fallback: 'https://www.blik.com/static/esplatform/blik/public/static/type01.d7292e54.svg' },
-    { name: 'VISA', path: '/img/Visa.png', fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/1200px-Visa_Inc._logo.svg.png' },
-    { name: 'MASTERCARD', path: '/img/Mastercard.png', fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Mastercard_2019_logo.svg/1920px-Mastercard_2019_logo.svg.png' },
+    { name: 'BLIK', path: '/img/Blik.svg' },
+    { name: 'VISA', path: '/img/Visa.png' },
+    { name: 'MASTERCARD', path: '/img/Mastercard.png' },
     { name: 'PAY U', path: '/img/payu.png' }
   ];
   

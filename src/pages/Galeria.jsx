@@ -42,24 +42,23 @@ const Galeria = () => {
   };
 
   const settings = {
-    dots: false, // Usunięcie kropek
+    dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 3,
+    slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000,
-    centerMode: true,
-    centerPadding: '0',
-    arrows: false, // Usunięcie domyślnych strzałek, dodajemy własne
-    swipe: true, // Włączenie obsługi przeciągania na urządzeniach mobilnych
-    swipeToSlide: true, // Umożliwienie przewijania do konkretnego slajdu przeciąganiem
-    touchMove: true, // Włączenie ruchu dotykowego
+    centerMode: false,
+    arrows: false,
+    swipe: true,
+    swipeToSlide: true,
+    touchMove: true,
     responsive: [
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 1,
           slidesToScroll: 1,
         }
       },
@@ -68,7 +67,6 @@ const Galeria = () => {
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
-          centerPadding: '0',
         }
       }
     ]
@@ -101,7 +99,6 @@ const Galeria = () => {
             effect="blur"
             className="w-full h-full object-cover"
             threshold={300}
-            placeholderSrc="/img/placeholder.jpg"
           />
         </div>
       ))}
@@ -151,7 +148,7 @@ const Galeria = () => {
               {images.map((image) => (
                 <div key={image.id} className="px-2">
                   <div 
-                    className="relative aspect-[3/4] rounded-lg overflow-hidden shadow-lg cursor-pointer"
+                    className="relative mx-auto max-w-2xl aspect-[3/4] rounded-lg overflow-hidden shadow-lg cursor-pointer"
                     onClick={() => openModal(image)}
                   >
                     <LazyLoadImage
@@ -160,7 +157,6 @@ const Galeria = () => {
                       effect="blur"
                       className="absolute inset-0 w-full h-full object-cover transform hover:scale-105 transition-transform duration-300"
                       threshold={300}
-                      placeholderSrc="/img/placeholder.jpg"
                     />
                     <div className="absolute inset-0 bg-purple-900 bg-opacity-0 hover:bg-opacity-20 flex items-center justify-center transition-all duration-300">
                       <div className="opacity-0 hover:opacity-100 transition-opacity duration-300">
@@ -169,6 +165,9 @@ const Galeria = () => {
                         </svg>
                       </div>
                     </div>
+                  </div>
+                  <div className="text-center mt-3 text-purple-700">
+                    Fryzura {image.id} / {images.length}
                   </div>
                 </div>
               ))}
@@ -273,7 +272,6 @@ const Galeria = () => {
               className="w-full h-auto object-contain max-h-[80vh]"
               effect="blur"
               threshold={300}
-              placeholderSrc="/img/placeholder.jpg"
             />
             <div className="flex justify-between mt-4">
               <button 
@@ -307,13 +305,11 @@ const Galeria = () => {
       {/* Custom styles for the carousel */}
       <style jsx>{`
         .gallery-slider .slick-slide {
-          opacity: 0.5;
-          transition: opacity 0.3s ease;
+          transition: transform 0.3s ease;
         }
         .gallery-slider .slick-center {
-          opacity: 1;
+          transform: scale(1.05);
         }
-        /* Usunięcie stylów dla kropek, ponieważ kropki są wyłączone */
       `}</style>
     </>
   );
