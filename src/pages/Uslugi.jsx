@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 const ServiceCard = ({ title, description, icon, delay }) => {
   return (
@@ -163,6 +165,7 @@ const Uslugi = () => {
 
   return (
     <>
+      <Navbar />
       {/* Hero Section - with padding to prevent overlap with fixed navbar */}
       <section className="pt-32 pb-16 md:pt-40 md:pb-20 bg-white text-purple-800">
         <div className="container mx-auto px-4">
@@ -335,6 +338,7 @@ const Uslugi = () => {
           </div>
         </div>
       </section>
+      <Footer />
     </>
   );
 };

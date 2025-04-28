@@ -1,6 +1,4 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
 import Home from './pages/Homepage';
 import Uslugi from './pages/Uslugi';
 import Kontakt from './pages/Kontakt';
@@ -21,7 +19,6 @@ function App() {
     <Router>
       <RouteLogger>
         <div className="flex flex-col min-h-screen">
-          <Navbar />
           <main className="flex-grow">
             <Routes>
               <Route path="/" element={<Home />} />
@@ -43,7 +40,6 @@ function App() {
               } />
             </Routes>
           </main>
-          <Footer />
         </div>
       </RouteLogger>
     </Router>
