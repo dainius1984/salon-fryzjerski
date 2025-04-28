@@ -1,6 +1,4 @@
 import React, { useEffect } from 'react';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
@@ -156,6 +154,8 @@ const EquipmentSection = () => {
 };
 
 const Uslugi = () => {
+  console.log('Uslugi component rendering');
+  
   // Scroll to top on page load
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -163,9 +163,6 @@ const Uslugi = () => {
 
   return (
     <>
-      {/* Fixed navbar */}
-      <Navbar />
-      
       {/* Hero Section - with padding to prevent overlap with fixed navbar */}
       <section className="pt-32 pb-16 md:pt-40 md:pb-20 bg-white text-purple-800">
         <div className="container mx-auto px-4">
@@ -338,8 +335,6 @@ const Uslugi = () => {
           </div>
         </div>
       </section>
-
-      <Footer />
     </>
   );
 };

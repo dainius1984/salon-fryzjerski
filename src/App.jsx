@@ -4,7 +4,7 @@ import Footer from './components/Footer';
 import Home from './pages/Homepage';
 import Uslugi from './pages/Uslugi';
 import Kontakt from './pages/Kontakt';
-import Gallery from './pages/Gallery';
+import Galeria from './pages/Galeria';
 import Cennik from './pages/Cennik';
 
 // Wrapper component to log route changes
@@ -29,8 +29,8 @@ function App() {
               <Route path="/cennik" element={<Cennik />} />
               <Route path="/galeria" element={
                 <>
-                  {console.log('Rendering Gallery route')}
-                  <Gallery />
+                  {console.log('Rendering Galeria route')}
+                  <Galeria />
                 </>
               } />
               <Route path="/kontakt" element={<Kontakt />} />

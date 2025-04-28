@@ -7,12 +7,11 @@ import { MapPinIcon, CalendarIcon } from '@heroicons/react/24/outline';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-const Gallery = () => {
-  console.log('Gallery component is rendering!');
+const Galeria = () => {
+  console.log('Galeria component rendering');
 
   useEffect(() => {
-    console.log('Gallery component mounted');
-    return () => console.log('Gallery component unmounted');
+    window.scrollTo(0, 0);
   }, []);
 
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -54,21 +53,23 @@ const Gallery = () => {
   };
 
   return (
-    <div className="min-h-screen bg-purple-50">
-      {/* Hero Section */}
-      <div className="bg-purple-900 text-white py-16">
+    <>
+      {/* Hero Section - with padding to prevent overlap with fixed navbar */}
+      <section className="pt-32 pb-16 md:pt-40 md:pb-20 bg-purple-900 text-white">
         <div className="container mx-auto px-4">
-          <h1 className="text-4xl md:text-5xl font-playfair text-center mb-6">
-            Nasza Galeria
-          </h1>
-          <p className="text-lg text-center text-purple-200 max-w-2xl mx-auto">
-            Odkryj nasze najlepsze fryzury i metamorfozy. Każde zdjęcie opowiada historię zadowolonego klienta i naszej pasji do fryzjerstwa.
-          </p>
+          <div className="max-w-3xl mx-auto text-center">
+            <h1 className="text-4xl md:text-5xl font-playfair text-center mb-6">
+              Nasza Galeria
+            </h1>
+            <p className="text-lg text-center text-purple-200 max-w-2xl mx-auto">
+              Odkryj nasze najlepsze fryzury i metamorfozy. Każde zdjęcie opowiada historię zadowolonego klienta i naszej pasji do fryzjerstwa.
+            </p>
+          </div>
         </div>
-      </div>
+      </section>
 
       {/* Carousel Section */}
-      <div className="py-12 bg-white">
+      <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <Slider {...settings} className="gallery-slider">
@@ -86,10 +87,10 @@ const Gallery = () => {
             </Slider>
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Description and Buttons Section */}
-      <div className="py-16 bg-purple-50">
+      <section className="py-16 bg-purple-50">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl font-playfair text-purple-900 mb-6">
@@ -119,10 +120,10 @@ const Gallery = () => {
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Map Section */}
-      <div id="mapa" className="py-16 bg-white">
+      <section id="mapa" className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-3xl font-playfair text-purple-900 mb-8 text-center">
@@ -141,7 +142,7 @@ const Gallery = () => {
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Custom styles for the carousel */}
       <style jsx>{`
@@ -159,8 +160,8 @@ const Gallery = () => {
           color: #7e22ce;
         }
       `}</style>
-    </div>
+    </>
   );
 };
 
-export default Gallery; 
+export default Galeria; 
