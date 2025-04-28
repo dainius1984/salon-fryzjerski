@@ -1,3 +1,5 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow:
+Allow: /
+
+Sitemap: https://salon-fryzjerski-u-malgosi.vercel.app/sitemap.xml

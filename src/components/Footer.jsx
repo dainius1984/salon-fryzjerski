@@ -4,13 +4,12 @@ import { Link } from 'react-router-dom';
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   
-  // Używamy dynamicznego importu/wymagania obrazów zamiast ścieżek relatywnych
-  // Alternatywnie możemy użyć publicznych URL lub przechowywać obrazy w folderze public
-  const paymentMethods = [
-    { name: 'Blik', id: 'blik' },
-    { name: 'Visa', id: 'visa' },
-    { name: 'Mastercard', id: 'mastercard' },
-    { name: 'PayU', id: 'payu' }
+  // Lista metod płatności z ich ścieżkami publicznymi
+  const paymentImages = [
+    { name: 'BLIK', path: '/img/Blik.svg', fallback: 'https://www.blik.com/static/esplatform/blik/public/static/type01.d7292e54.svg' },
+    { name: 'VISA', path: '/img/Visa.png', fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/1200px-Visa_Inc._logo.svg.png' },
+    { name: 'MASTERCARD', path: '/img/Mastercard.png', fallback: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Mastercard_2019_logo.svg/1920px-Mastercard_2019_logo.svg.png' },
+    { name: 'PAY U', path: '/img/PayU.png', fallback: 'https://poland.payu.com/wp-content/uploads/sites/14/2020/05/PayU_logo_Lime.png' }
   ];
   
   return (
@@ -96,31 +95,22 @@ const Footer = () => {
           <div className="flex flex-col items-center">
             <h3 className="text-xl font-bold mb-6 font-playfair tracking-wide text-center">Metody płatności</h3>
             <div className="grid grid-cols-2 gap-4 max-w-[280px] mx-auto">
-              {/* Fallback ikony dla płatności zamiast obrazów */}
-              <div className="bg-purple-800/50 rounded-xl shadow-md flex flex-col items-center justify-center h-[100px] transition-transform transform hover:scale-105 hover:shadow-xl cursor-pointer p-5">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-white mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2z" />
-                </svg>
-                <span className="text-sm font-bold">BLIK</span>
-              </div>
-              <div className="bg-purple-800/50 rounded-xl shadow-md flex flex-col items-center justify-center h-[100px] transition-transform transform hover:scale-105 hover:shadow-xl cursor-pointer p-5">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-white mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-                </svg>
-                <span className="text-sm font-bold">VISA</span>
-              </div>
-              <div className="bg-purple-800/50 rounded-xl shadow-md flex flex-col items-center justify-center h-[100px] transition-transform transform hover:scale-105 hover:shadow-xl cursor-pointer p-5">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-white mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-                </svg>
-                <span className="text-sm font-bold">MASTERCARD</span>
-              </div>
-              <div className="bg-purple-800/50 rounded-xl shadow-md flex flex-col items-center justify-center h-[100px] transition-transform transform hover:scale-105 hover:shadow-xl cursor-pointer p-5">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-white mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2z" />
-                </svg>
-                <span className="text-sm font-bold">PAY U</span>
-              </div>
+              {/* Użycie tablicy paymentImages do wyświetlania obrazów */}
+              {paymentImages.map((payment, index) => (
+                <div 
+                  key={index}
+                  className="bg-white rounded-xl shadow-md flex items-center justify-center h-[100px] transition-transform transform hover:scale-105 hover:shadow-xl cursor-pointer p-5"
+                >
+                  <img 
+                    src={process.env.PUBLIC_URL + payment.path} 
+                    alt={payment.name} 
+                    className="w-full h-full object-contain"
+                    onError={(e) => {
+                      e.target.src = payment.fallback;
+                    }}
+                  />
+                </div>
+              ))}
             </div>
           </div>
         </div>

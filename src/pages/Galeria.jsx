@@ -5,6 +5,7 @@ import { MapPinIcon, CalendarIcon } from '@heroicons/react/24/outline';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ContactMap from '../components/ContactMap';
+import SEO from '../components/SEO';
 
 // Import slick carousel styles
 import "slick-carousel/slick/slick.css";
@@ -87,6 +88,14 @@ const Galeria = () => {
 
   return (
     <>
+      <SEO 
+        title="Galeria Fryzur - Salon Fryzjerski u Małgosi we Wrocławiu"
+        description="Zobacz nasze najlepsze realizacje fryzur. Metamorfozy, strzyżenia, koloryzacje i stylizacje wykonane w Salonie Fryzjerskim u Małgosi we Wrocławiu."
+        keywords="galeria fryzur, fryzury Wrocław, metamorfozy fryzur, koloryzacja włosów, strzyżenie damskie, fryzury męskie"
+        url="/galeria"
+        canonical="/galeria"
+        type="article"
+      />
       <Navbar />
       
       {/* Hero Section - with padding to prevent overlap with fixed navbar */}
