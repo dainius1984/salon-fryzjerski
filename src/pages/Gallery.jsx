@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Slider from 'react-slick';
 import { Link } from 'react-router-dom';
 import { MapPinIcon, CalendarIcon } from '@heroicons/react/24/outline';
@@ -8,6 +8,13 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 const Gallery = () => {
+  console.log('Gallery component is rendering!');
+
+  useEffect(() => {
+    console.log('Gallery component mounted');
+    return () => console.log('Gallery component unmounted');
+  }, []);
+
   const [currentSlide, setCurrentSlide] = useState(0);
 
   // Generate array of image paths from 1 to 95
