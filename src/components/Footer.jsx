@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -8,7 +9,7 @@ const Footer = () => {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-16 items-start">
           {/* Column 1: Kontakt */}
-          <div>
+          <div className="text-center md:text-left">
             <h3 className="text-xl font-bold mb-6 font-playfair tracking-wide">Kontakt</h3>
             <ul className="space-y-3 text-purple-100">
               <li className="flex items-center justify-center md:justify-start">
@@ -28,7 +29,7 @@ const Footer = () => {
                 <svg className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <div className="text-left">
+                <div className="text-center md:text-left">
                   <p>Pn - Pt: 10:00 - 18:00</p>
                   <p>Sb: 9:00 - 14:00</p>
                   <p>Nd: Zamknięte</p>
@@ -37,55 +38,55 @@ const Footer = () => {
             </ul>
           </div>
           {/* Column 2: Szybkie linki */}
-          <div>
+          <div className="text-center">
             <h3 className="text-xl font-bold mb-6 font-playfair tracking-wide">Szybkie linki</h3>
             <ul className="space-y-2 text-purple-100">
-              <li>
-                <a href="/" className="hover:text-white hover:underline transition duration-300 flex items-center">
-                  <svg className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-                  </svg>
+              <li className="flex items-center justify-center">
+                <svg className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                </svg>
+                <Link to="/" className="hover:text-white hover:underline transition duration-300">
                   Strona Główna
-                </a>
+                </Link>
               </li>
-              <li>
-                <a href="/uslugi" className="hover:text-white hover:underline transition duration-300 flex items-center">
-                  <svg className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-                  </svg>
+              <li className="flex items-center justify-center">
+                <svg className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                </svg>
+                <Link to="/uslugi" className="hover:text-white hover:underline transition duration-300">
                   Usługi
-                </a>
+                </Link>
               </li>
-              <li>
-                <a href="/cennik" className="hover:text-white hover:underline transition duration-300 flex items-center">
-                  <svg className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-                  </svg>
+              <li className="flex items-center justify-center">
+                <svg className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                </svg>
+                <Link to="/cennik" className="hover:text-white hover:underline transition duration-300">
                   Cennik
-                </a>
+                </Link>
               </li>
-              <li>
-                <a href="/galeria" className="hover:text-white hover:underline transition duration-300 flex items-center">
-                  <svg className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-                  </svg>
+              <li className="flex items-center justify-center">
+                <svg className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                </svg>
+                <Link to="/galeria" className="hover:text-white hover:underline transition duration-300">
                   Galeria
-                </a>
+                </Link>
               </li>
-              <li>
-                <a href="/kontakt" className="hover:text-white hover:underline transition duration-300 flex items-center">
-                  <svg className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-                  </svg>
+              <li className="flex items-center justify-center">
+                <svg className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                </svg>
+                <Link to="/kontakt" className="hover:text-white hover:underline transition duration-300">
                   Kontakt
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
           {/* Column 3: Metody płatności */}
-          <div>
-            <h3 className="text-xl font-bold mb-6 font-playfair tracking-wide">Metody płatności</h3>
-            <div className="grid grid-cols-2 gap-4 max-w-[280px]">
+          <div className="flex flex-col items-center">
+            <h3 className="text-xl font-bold mb-6 font-playfair tracking-wide text-center">Metody płatności</h3>
+            <div className="grid grid-cols-2 gap-4 max-w-[280px] mx-auto">
               <div className="bg-purple-800/50 rounded-xl shadow-md flex items-center justify-center h-[100px] transition-transform transform hover:scale-105 hover:shadow-xl cursor-pointer p-5">
                 <img src="/img/Blik.svg" alt="Blik" className="w-full h-full object-contain" />
               </div>

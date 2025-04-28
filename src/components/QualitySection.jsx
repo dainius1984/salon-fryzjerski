@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const QualitySection = () => {
   // Sample features to highlight quality
@@ -68,9 +69,9 @@ const QualitySection = () => {
           <p className="text-lg text-gray-700 max-w-3xl mx-auto mb-8">
             Od ponad 15 lat spełniamy oczekiwania najbardziej wymagających klientów. Zaufaj naszemu doświadczeniu i dołącz do grona zadowolonych klientów.
           </p>
-          <a href="/galeria" className="bg-purple-700 hover:bg-purple-800 text-white font-bold py-3 px-8 rounded-full transition duration-300 text-lg shadow-md">
+          <Link to="/galeria" className="bg-purple-700 hover:bg-purple-800 text-white font-bold py-3 px-8 rounded-full transition duration-300 text-lg shadow-md">
             Zobacz nasze realizacje
-          </a>
+          </Link>
         </div>
       </div>
     </section>
