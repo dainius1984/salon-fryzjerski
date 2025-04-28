@@ -6,6 +6,8 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ContactMap from '../components/ContactMap';
 import SEO from '../components/SEO';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 // Import slick carousel styles
 import "slick-carousel/slick/slick.css";
@@ -93,10 +95,13 @@ const Galeria = () => {
           className="aspect-[3/4] rounded-lg overflow-hidden shadow-md cursor-pointer transform transition-transform hover:scale-105 hover:shadow-lg"
           onClick={() => openModal(image)}
         >
-          <img
+          <LazyLoadImage
             src={image.path}
             alt={`Fryzura ${image.id}`}
+            effect="blur"
             className="w-full h-full object-cover"
+            threshold={300}
+            placeholderSrc="/img/placeholder.jpg"
           />
         </div>
       ))}
@@ -149,10 +154,13 @@ const Galeria = () => {
                     className="relative aspect-[3/4] rounded-lg overflow-hidden shadow-lg cursor-pointer"
                     onClick={() => openModal(image)}
                   >
-                    <img
+                    <LazyLoadImage
                       src={image.path}
                       alt={`Fryzura ${image.id}`}
+                      effect="blur"
                       className="absolute inset-0 w-full h-full object-cover transform hover:scale-105 transition-transform duration-300"
+                      threshold={300}
+                      placeholderSrc="/img/placeholder.jpg"
                     />
                     <div className="absolute inset-0 bg-purple-900 bg-opacity-0 hover:bg-opacity-20 flex items-center justify-center transition-all duration-300">
                       <div className="opacity-0 hover:opacity-100 transition-opacity duration-300">
@@ -259,10 +267,13 @@ const Galeria = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
               </svg>
             </button>
-            <img 
+            <LazyLoadImage 
               src={modalImage.path} 
               alt={`Fryzura ${modalImage.id}`} 
               className="w-full h-auto object-contain max-h-[80vh]"
+              effect="blur"
+              threshold={300}
+              placeholderSrc="/img/placeholder.jpg"
             />
             <div className="flex justify-between mt-4">
               <button 

@@ -4,8 +4,34 @@ import Uslugi from './pages/Uslugi';
 import Kontakt from './pages/Kontakt';
 import Galeria from './pages/Galeria';
 import Cennik from './pages/Cennik';
+import { useEffect } from 'react';
 
 function App() {
+  useEffect(() => {
+    // Zatrzymaj wskaźnik ładowania karty po pełnym załadowaniu strony
+    window.addEventListener('load', () => {
+      if (document.readyState === 'complete') {
+        // Jeśli w URL jest fragment, przewiń do niego
+        if (window.location.hash) {
+          const id = window.location.hash.substring(1);
+          const element = document.getElementById(id);
+          if (element) element.scrollIntoView();
+        }
+        // Wymuś zatrzymanie wskaźnika ładowania
+        setTimeout(() => {
+          window.stop();
+        }, 1000);
+      }
+    });
+    
+    // Funkcja do obsługi SameSite cookie issues
+    const fixCookieIssues = () => {
+      document.cookie = "SameSite=None; Secure; path=/";
+    };
+    
+    fixCookieIssues();
+  }, []);
+
   return (
     <Router>
       <div className="flex flex-col min-h-screen">
