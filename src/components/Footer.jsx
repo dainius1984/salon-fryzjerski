@@ -85,17 +85,17 @@ const Footer = () => {
           {/* Column 3: Metody płatności */}
           <div>
             <h3 className="text-xl font-bold mb-6 font-playfair tracking-wide">Metody płatności</h3>
-            <div className="grid grid-cols-2 gap-3">
-              <div className="bg-purple-800 rounded-lg shadow-md flex items-center justify-center h-20 w-28 transition-transform transform hover:scale-105 hover:shadow-xl cursor-pointer p-3">
+            <div className="grid grid-cols-2 gap-4 max-w-[280px]">
+              <div className="bg-purple-800/50 rounded-xl shadow-md flex items-center justify-center h-[100px] transition-transform transform hover:scale-105 hover:shadow-xl cursor-pointer p-5">
                 <img src="/img/Blik.svg" alt="Blik" className="w-full h-full object-contain" />
               </div>
-              <div className="bg-purple-800 rounded-lg shadow-md flex items-center justify-center h-20 w-28 transition-transform transform hover:scale-105 hover:shadow-xl cursor-pointer p-3">
+              <div className="bg-purple-800/50 rounded-xl shadow-md flex items-center justify-center h-[100px] transition-transform transform hover:scale-105 hover:shadow-xl cursor-pointer p-5">
                 <img src="/img/Visa.png" alt="Visa" className="w-full h-full object-contain" />
               </div>
-              <div className="bg-purple-800 rounded-lg shadow-md flex items-center justify-center h-20 w-28 transition-transform transform hover:scale-105 hover:shadow-xl cursor-pointer p-3">
+              <div className="bg-purple-800/50 rounded-xl shadow-md flex items-center justify-center h-[100px] transition-transform transform hover:scale-105 hover:shadow-xl cursor-pointer p-5">
                 <img src="/img/Mastercard.png" alt="Mastercard" className="w-full h-full object-contain" />
               </div>
-              <div className="bg-purple-800 rounded-lg shadow-md flex items-center justify-center h-20 w-28 transition-transform transform hover:scale-105 hover:shadow-xl cursor-pointer p-3">
+              <div className="bg-purple-800/50 rounded-xl shadow-md flex items-center justify-center h-[100px] transition-transform transform hover:scale-105 hover:shadow-xl cursor-pointer p-5">
                 <img src="/img/PayU.png" alt="PayU" className="w-full h-full object-contain" />
               </div>
             </div>
