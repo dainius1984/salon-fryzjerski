@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Slider from 'react-slick';
 import { Link } from 'react-router-dom';
-import { MapPinIcon, CalendarIcon } from '@heroicons/react/24/outline';
+import { MapPinIcon, CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ContactMap from '../components/ContactMap';
@@ -16,7 +16,7 @@ const Galeria = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  const [setCurrentSlide] = useState(0);
+  const sliderRef = useRef(null);
   const [modalImage, setModalImage] = useState(null);
 
   // Generate array of image paths from 1 to 95
@@ -25,8 +25,22 @@ const Galeria = () => {
     path: `/img/haircut/${String(i + 1).padStart(2, '0')}.jpg`
   }));
 
+  // Go to previous slide
+  const goPrev = () => {
+    if (sliderRef.current) {
+      sliderRef.current.slickPrev();
+    }
+  };
+
+  // Go to next slide
+  const goNext = () => {
+    if (sliderRef.current) {
+      sliderRef.current.slickNext();
+    }
+  };
+
   const settings = {
-    dots: true,
+    dots: false, // Usunięcie kropek
     infinite: true,
     speed: 500,
     slidesToShow: 3,
@@ -35,7 +49,10 @@ const Galeria = () => {
     autoplaySpeed: 3000,
     centerMode: true,
     centerPadding: '0',
-    beforeChange: (current, next) => setCurrentSlide(next),
+    arrows: false, // Usunięcie domyślnych strzałek, dodajemy własne
+    swipe: true, // Włączenie obsługi przeciągania na urządzeniach mobilnych
+    swipeToSlide: true, // Umożliwienie przewijania do konkretnego slajdu przeciąganiem
+    touchMove: true, // Włączenie ruchu dotykowego
     responsive: [
       {
         breakpoint: 1024,
@@ -67,19 +84,19 @@ const Galeria = () => {
     document.body.style.overflow = 'auto';
   };
 
-  // Pokaż wszystkie zdjęcia w siatce
+  // Pokaż wszystkie zdjęcia w siatce - mniejsze zdjęcia w siatce
   const allImages = () => (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-8">
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 my-8">
       {images.map((image) => (
         <div 
           key={image.id} 
-          className="aspect-[3/4] rounded-lg overflow-hidden shadow-lg cursor-pointer"
+          className="aspect-[3/4] rounded-lg overflow-hidden shadow-md cursor-pointer transform transition-transform hover:scale-105 hover:shadow-lg"
           onClick={() => openModal(image)}
         >
           <img
             src={image.path}
             alt={`Fryzura ${image.id}`}
-            className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+            className="w-full h-full object-cover"
           />
         </div>
       ))}
@@ -114,9 +131,18 @@ const Galeria = () => {
 
       {/* Carousel Section */}
       <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <Slider {...settings} className="gallery-slider">
+        <div className="container mx-auto px-4 relative">
+          <div className="max-w-6xl mx-auto relative px-8 md:px-16">
+            {/* Strzałka w lewo */}
+            <button
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-purple-600 text-white rounded-full p-2 shadow-lg hover:bg-purple-700 transition-colors"
+              onClick={goPrev}
+              aria-label="Poprzednie zdjęcie"
+            >
+              <ChevronLeftIcon className="h-6 w-6" />
+            </button>
+            
+            <Slider ref={sliderRef} {...settings} className="gallery-slider">
               {images.map((image) => (
                 <div key={image.id} className="px-2">
                   <div 
@@ -130,7 +156,7 @@ const Galeria = () => {
                     />
                     <div className="absolute inset-0 bg-purple-900 bg-opacity-0 hover:bg-opacity-20 flex items-center justify-center transition-all duration-300">
                       <div className="opacity-0 hover:opacity-100 transition-opacity duration-300">
-                        <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <svg className="w-8 h-8 md:w-12 md:h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path>
                         </svg>
                       </div>
@@ -139,6 +165,16 @@ const Galeria = () => {
                 </div>
               ))}
             </Slider>
+            
+            {/* Strzałka w prawo */}
+            <button
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-purple-600 text-white rounded-full p-2 shadow-lg hover:bg-purple-700 transition-colors"
+              onClick={goNext}
+              aria-label="Następne zdjęcie"
+            >
+              <ChevronRightIcon className="h-6 w-6" />
+            </button>
+            
             <div className="mt-8 text-center">
               <button
                 onClick={() => document.getElementById('allPhotos').scrollIntoView({ behavior: 'smooth' })}
@@ -266,12 +302,7 @@ const Galeria = () => {
         .gallery-slider .slick-center {
           opacity: 1;
         }
-        .gallery-slider .slick-dots li button:before {
-          color: #7e22ce;
-        }
-        .gallery-slider .slick-dots li.slick-active button:before {
-          color: #7e22ce;
-        }
+        /* Usunięcie stylów dla kropek, ponieważ kropki są wyłączone */
       `}</style>
     </>
   );
