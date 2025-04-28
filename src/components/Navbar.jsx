@@ -64,10 +64,10 @@ const Navbar = ({ transparent = false }) => {
           
           {/* Logo/Site Title - Center on mobile, left on desktop */}
           <Link to="/" className="flex items-center space-x-2">
-            <img src="/img/logo2.png" alt="Salon Fryzjerski u Gosii Logo" className="h-12 w-auto" />
+            <img src="/img/logo2.png" alt="Salon Fryzjerski u Małgosi Logo" className="h-12 w-auto" />
             <div className={`font-playfair font-bold ${isScrolled ? 'text-purple-800' : 'text-white'}`}>
               <div className="text-xl leading-tight">Salon Fryzjerski</div>
-              <div className="text-xl leading-tight">u Gosii</div>
+              <div className="text-xl leading-tight">u Małgosi</div>
             </div>
           </Link>
           
