@@ -13,20 +13,17 @@ const Navbar = ({ transparent = false }) => {
   };
 
   useEffect(() => {
-    console.log("NAVBAR: Current pathname:", location.pathname);
-    
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 0);
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [location.pathname]);
+  }, []);
 
   // Determine active link based on current path
   const getActiveLink = () => {
     const path = location.pathname;
-    console.log("NAVBAR: Getting active link for path:", path);
     if (path === '/') return 'Strona Główna';
     if (path === '/uslugi') return 'Usługi';
     if (path === '/cennik') return 'Cennik';
@@ -36,7 +33,6 @@ const Navbar = ({ transparent = false }) => {
   };
 
   const activeLink = hoverLink || getActiveLink();
-  console.log("NAVBAR: Active link is:", activeLink);
 
   // Placeholder links - replace with actual routes if using React Router
   const navLinks = [
@@ -54,30 +50,33 @@ const Navbar = ({ transparent = false }) => {
 
   return (
     <header className={`${navClasses} w-full z-50 ${transparent ? '' : 'fixed'} font-lato`}>
-      <nav className="container mx-auto px-4 py-4 flex flex-wrap items-center justify-between">
-
-        {/* Logo/Site Title - Left aligned */}
-        <div className="flex items-center z-20">
-          <Link to="/" className="flex items-center space-x-2">
-            <img src="/img/logo2.png" alt="Salon Fryzjerski u Gosii Logo" className="h-12 w-auto" />
-            <span className={`text-xl md:text-2xl font-playfair font-bold ${isScrolled ? 'text-purple-800' : 'text-white'}`}>
-              Salon Fryzjerski u Gosii
-            </span>
-          </Link>
-        </div>
-
-        {/* Hamburger Icon (for mobile) - Right aligned - MADE BIGGER */}
-        <div className="lg:hidden z-20">
+      <nav className="container mx-auto px-4 py-3 flex flex-wrap items-center justify-between">
+        
+        {/* Mobile layout: Hamburger Menu | Logo | Text (in 2 lines) */}
+        <div className="flex items-center justify-between w-full lg:w-auto">
+          {/* Hamburger Icon (for mobile) - Left aligned on mobile */}
           <button
             onClick={toggleMenu}
-            className="flex items-center px-4 py-3 border rounded text-white border-white/50 hover:text-white hover:border-white"
+            className="flex lg:hidden items-center px-3 py-2 border rounded text-white border-white/50 hover:text-white hover:border-white"
           >
             <svg className="fill-current h-5 w-5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
           </button>
+          
+          {/* Logo/Site Title - Center on mobile, left on desktop */}
+          <Link to="/" className="flex items-center space-x-2">
+            <img src="/img/logo2.png" alt="Salon Fryzjerski u Gosii Logo" className="h-12 w-auto" />
+            <div className={`font-playfair font-bold ${isScrolled ? 'text-purple-800' : 'text-white'}`}>
+              <div className="text-xl leading-tight">Salon Fryzjerski</div>
+              <div className="text-xl leading-tight">u Gosii</div>
+            </div>
+          </Link>
+          
+          {/* Empty div to balance the flex layout on mobile */}
+          <div className="lg:hidden w-5"></div>
         </div>
 
         {/* Navigation Links (Desktop) - Right aligned */}
-        <div className="hidden lg:flex items-center space-x-8">
+        <div className="hidden lg:flex items-center space-x-8 ml-auto">
           <div className="flex space-x-8">
             {navLinks.map((link) => (
               <Link
@@ -86,7 +85,6 @@ const Navbar = ({ transparent = false }) => {
                 className={`text-white font-lato font-bold text-lg hover:underline decoration-2 underline-offset-4 transition-all duration-200 whitespace-nowrap relative py-1 ${activeLink === link.name ? 'underline' : ''}`}
                 onMouseEnter={() => setHoverLink(link.name)}
                 onMouseLeave={() => setHoverLink(null)}
-                onClick={() => console.log(`NAVBAR: Clicked on link to ${link.href}`)}
               >
                 {link.name}
               </Link>
@@ -116,7 +114,6 @@ const Navbar = ({ transparent = false }) => {
                 to={link.href}
                 className={`text-white font-lato font-bold text-lg hover:underline decoration-2 underline-offset-4 ${activeLink === link.name ? 'underline' : ''}`}
                 onClick={() => {
-                  console.log(`NAVBAR MOBILE: Clicked on link to ${link.href}`);
                   setIsOpen(false);
                   setHoverLink(null);
                 }}
@@ -139,7 +136,6 @@ const Navbar = ({ transparent = false }) => {
             </div>
           </div>
         </div>
-
       </nav>
     </header>
   );
