@@ -33,7 +33,7 @@ const Hero = () => {
       <div className="relative z-10 flex items-center justify-center h-full px-4">
         <div className="text-center max-w-3xl">
           <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white drop-shadow-lg">
-            Zmień Swój Styl z Gosią
+            Zmień z Nami Swój Styl
           </h1>
           <p className="text-lg md:text-2xl mb-10 text-white drop-shadow-lg max-w-2xl mx-auto">
             Odkryj nową siebie dzięki profesjonalnym usługom fryzjerskim. 
