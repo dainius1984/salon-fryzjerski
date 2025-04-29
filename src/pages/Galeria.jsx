@@ -121,43 +121,47 @@ const Galeria = () => {
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4 relative">
           <div className="max-w-6xl mx-auto relative px-8 md:px-16">
-            {/* Strzałka w lewo */}
-            <button
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-purple-600 text-white rounded-full p-2 shadow-lg hover:bg-purple-700 transition-colors"
-              onClick={goPrev}
-              aria-label="Poprzednie zdjęcie"
-            >
-              <ChevronLeftIcon className="h-6 w-6" />
-            </button>
-            
-            <Slider ref={sliderRef} {...settings} className="gallery-slider">
-              {images.map((image) => (
-                <div key={image.id} className="px-2 outline-none">
-                  <div 
-                    className="mx-auto max-w-md aspect-[3/4] rounded-lg overflow-hidden shadow-lg cursor-pointer"
-                    onClick={() => openModal(image)}
-                  >
-                    <img
-                      src={image.path}
-                      alt={`Fryzura ${image.id}`}
-                      className="w-full h-full object-cover"
-                    />
+            <div className="relative">
+              {/* Left arrow */}
+              <button
+                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-purple-600 text-white rounded-full p-2 shadow-lg hover:bg-purple-700 transition-colors"
+                onClick={goPrev}
+                aria-label="Poprzednie zdjęcie"
+              >
+                <ChevronLeftIcon className="h-6 w-6" />
+              </button>
+              
+              <Slider ref={sliderRef} {...settings} className="gallery-slider">
+                {/* Only display the first 10 images in the carousel to improve loading time */}
+                {images.slice(0, 10).map((image) => (
+                  <div key={image.id} className="px-2 focus:outline-none">
+                    <div 
+                      className="mx-auto aspect-[3/4] max-w-sm rounded-lg overflow-hidden shadow-lg cursor-pointer"
+                      onClick={() => openModal(image)}
+                    >
+                      {/* Use the same img loading approach that works in the grid */}
+                      <img
+                        src={image.path}
+                        alt={`Fryzura ${image.id}`}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="text-center mt-3 text-purple-700">
+                      {image.id} / 10
+                    </div>
                   </div>
-                  <div className="text-center mt-3 text-purple-700">
-                    Fryzura {image.id} / {images.length}
-                  </div>
-                </div>
-              ))}
-            </Slider>
-            
-            {/* Strzałka w prawo */}
-            <button
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-purple-600 text-white rounded-full p-2 shadow-lg hover:bg-purple-700 transition-colors"
-              onClick={goNext}
-              aria-label="Następne zdjęcie"
-            >
-              <ChevronRightIcon className="h-6 w-6" />
-            </button>
+                ))}
+              </Slider>
+              
+              {/* Right arrow */}
+              <button
+                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-purple-600 text-white rounded-full p-2 shadow-lg hover:bg-purple-700 transition-colors"
+                onClick={goNext}
+                aria-label="Następne zdjęcie"
+              >
+                <ChevronRightIcon className="h-6 w-6" />
+              </button>
+            </div>
             
             <div className="mt-8 text-center">
               <button
