@@ -54,22 +54,8 @@ const Galeria = () => {
     swipe: true,
     swipeToSlide: true,
     touchMove: true,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-        }
-      },
-      {
-        breakpoint: 640,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-        }
-      }
-    ]
+    adaptiveHeight: true,
+    lazyLoad: 'ondemand'
   };
 
   // Otwórz zdjęcie w trybie pełnoekranowym
@@ -146,25 +132,16 @@ const Galeria = () => {
             
             <Slider ref={sliderRef} {...settings} className="gallery-slider">
               {images.map((image) => (
-                <div key={image.id} className="px-2">
+                <div key={image.id} className="px-2 outline-none">
                   <div 
-                    className="relative mx-auto max-w-2xl aspect-[3/4] rounded-lg overflow-hidden shadow-lg cursor-pointer"
+                    className="mx-auto max-w-md aspect-[3/4] rounded-lg overflow-hidden shadow-lg cursor-pointer"
                     onClick={() => openModal(image)}
                   >
-                    <LazyLoadImage
+                    <img
                       src={image.path}
                       alt={`Fryzura ${image.id}`}
-                      effect="blur"
-                      className="absolute inset-0 w-full h-full object-cover transform hover:scale-105 transition-transform duration-300"
-                      threshold={300}
+                      className="w-full h-full object-cover"
                     />
-                    <div className="absolute inset-0 bg-purple-900 bg-opacity-0 hover:bg-opacity-20 flex items-center justify-center transition-all duration-300">
-                      <div className="opacity-0 hover:opacity-100 transition-opacity duration-300">
-                        <svg className="w-8 h-8 md:w-12 md:h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path>
-                        </svg>
-                      </div>
-                    </div>
                   </div>
                   <div className="text-center mt-3 text-purple-700">
                     Fryzura {image.id} / {images.length}
