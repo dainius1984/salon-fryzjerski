@@ -60,8 +60,9 @@ const ContactInfo = () => {
           </div>
           <div>
             <h4 className="text-lg font-bold text-gray-700 mb-1">Godziny otwarcia</h4>
-            <p className="text-gray-600">Poniedziałek - Piątek: 10:00 - 18:00</p>
-            <p className="text-gray-600">Sobota: 9:00 - 14:00</p>
+            <p className="text-gray-600">Poniedziałek, Środa, Piątek: 10:00 - 16:00</p>
+            <p className="text-gray-600">Wtorek, Czwartek: 11:00 - 18:00</p>
+            <p className="text-gray-600">Sobota: 10:00 - 14:00</p>
             <p className="text-gray-600">Niedziela: Zamknięte</p>
           </div>
         </div>

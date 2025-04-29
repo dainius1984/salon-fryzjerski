@@ -6,13 +6,13 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 const priceList = [
-  { service: 'Strzyżenie męskie', price: '50 zł' },
-  { service: 'Strzyżenie dziecięce', price: 'od 35 do 45 zł' },
-  { service: 'Strzyżenie damskie', price: 'od 55 do 100 zł' },
-  { service: 'Farba', price: 'od 130 do 250 zł' },
-  { service: 'Balejaż', price: 'od 150 do 280 zł' },
-  { service: 'Pielęgnacja', price: 'od 100 do 150 zł' },
-  { service: 'Trwała', price: 'od 120 do 200 zł' },
+  { service: 'Strzyżenie męskie', price: '45 - 55 zł' },
+  { service: 'Strzyżenie damskie', price: '60 - 120 zł' },
+  { service: 'Strzyżenie dziecięce', price: '40 - 50 zł' },
+  { service: 'Farba', price: '140 - 250 zł' },
+  { service: 'Balejaż', price: '180 - 300 zł' },
+  { service: 'Styling', price: '140 - 250 zł' },
+  { service: 'Pielęgnacja pod sauną parową', price: '100 - 200 zł' },
 ];
 
 const Cennik = () => {

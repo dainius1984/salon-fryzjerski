@@ -37,10 +37,13 @@ const ContactMap = () => {
               Godziny otwarcia:
             </h3>
             <p className="text-gray-700">
-              Pn - Pt: 10:00 - 18:00
+              Pon, Śr, Pt: 10:00 - 16:00
             </p>
             <p className="text-gray-700">
-              Sb: 9:00 - 14:00
+              Wt, Czw: 11:00 - 18:00
+            </p>
+            <p className="text-gray-700">
+              Sb: 10:00 - 14:00
             </p>
           </div>
 

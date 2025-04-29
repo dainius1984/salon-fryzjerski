@@ -212,7 +212,7 @@ const Uslugi = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
             <ServiceCard 
               title="Strzyżenie" 
-              description="Profesjonalne strzyżenie damskie, męskie i dziecięce. Nasi styliści pomogą dobrać idealną fryzurę do kształtu twarzy i stylu życia."
+              description="Profesjonalne strzyżenie damskie, męskie i dziecięce. Pomożemy Ci dobrać idealną fryzurę do kształtu twarzy i stylu życia."
               icon={<svg className="w-8 h-8 text-purple-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.121 14.121L19 19m-7-7l7-7m-7 7l-2.879 2.879M12 12L9.121 9.121m0 5.758a3 3 0 10-4.243 4.243 3 3 0 004.243-4.243zm0 0L9.121 9.121m0 5.758l3-3m-3 3l-1.5 1.5" />
               </svg>}

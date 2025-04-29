@@ -28,8 +28,9 @@ const Footer = () => {
               </li>
               <li className="flex items-center justify-center md:justify-start">
                 <div className="text-center md:text-left">
-                  <p>Pn - Pt: 10:00 - 18:00</p>
-                  <p>Sb: 9:00 - 14:00</p>
+                  <p>Pon, Śr, Pt: 10:00 - 16:00</p>
+                  <p>Wt, Czw: 11:00 - 18:00</p>
+                  <p>Sb: 10:00 - 14:00</p>
                   <p>Nd: Zamknięte</p>
                 </div>
               </li>
