@@ -1,17 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
-import Slider from 'react-slick';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { MapPinIcon, CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
+import { MapPinIcon, CalendarIcon } from '@heroicons/react/24/outline';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ContactMap from '../components/ContactMap';
 import SEO from '../components/SEO';
+import ImageSlider from '../components/ImageSlider'; // Import the new component
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import 'react-lazy-load-image-component/src/effects/blur.css';
-
-// Import slick carousel styles
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 
 const Galeria = () => {
   useEffect(() => {
@@ -19,8 +14,7 @@ const Galeria = () => {
   }, []);
 
   const sliderRef = useRef(null);
-  const [modalImage, setModalImage] = useState(null);
-
+ const [modalImage, setModalImage] = useState(null);
   // Generate array of image paths from 1 to 95
   const images = Array.from({ length: 95 }, (_, i) => ({
     id: i + 1,
@@ -41,23 +35,6 @@ const Galeria = () => {
     }
   };
 
-  const settings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 3000,
-    centerMode: false,
-    arrows: false,
-    swipe: true,
-    swipeToSlide: true,
-    touchMove: true,
-    adaptiveHeight: true,
-    lazyLoad: 'ondemand'
-  };
-
   // Otwórz zdjęcie w trybie pełnoekranowym
   const openModal = (image) => {
     setModalImage(image);
@@ -68,30 +45,6 @@ const Galeria = () => {
   const closeModal = () => {
     setModalImage(null);
     document.body.style.overflow = 'auto';
-  };
-
-  // Pokaż wszystkie zdjęcia w siatce - mniejsze zdjęcia w siatce
-  const allImages = () => (
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 my-8">
-      {images.map((image) => (
-        <div 
-          key={image.id} 
-          className="aspect-[3/4] rounded-lg overflow-hidden shadow-md cursor-pointer transform transition-transform hover:scale-105 hover:shadow-lg"
-          onClick={() => openModal(image)}
-        >
-          <LazyLoadImage
-            src={image.path}
-            alt={`Fryzura ${image.id}`}
-            effect="blur"
-            className="w-full h-full object-cover"
-            threshold={300}
-          />
-        </div>
-      ))}
-    </div>
-  );
-
-  return (
     <>
       <SEO 
         title="Galeria Fryzur - Salon Fryzjerski u Małgosi we Wrocławiu"
@@ -117,53 +70,10 @@ const Galeria = () => {
         </div>
       </section>
 
-      {/* Carousel Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 relative">
-          <div className="max-w-6xl mx-auto relative px-8 md:px-16">
-            <div className="relative">
-              {/* Left arrow */}
-              <button
-                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-purple-600 text-white rounded-full p-2 shadow-lg hover:bg-purple-700 transition-colors"
-                onClick={goPrev}
-                aria-label="Poprzednie zdjęcie"
-              >
-                <ChevronLeftIcon className="h-6 w-6" />
-              </button>
-              
-              <Slider ref={sliderRef} {...settings} className="gallery-slider">
-                {/* Only display the first 10 images in the carousel to improve loading time */}
-                {images.slice(0, 10).map((image) => (
-                  <div key={image.id} className="px-2 focus:outline-none">
-                    <div 
-                      className="mx-auto aspect-[3/4] max-w-sm rounded-lg overflow-hidden shadow-lg cursor-pointer"
-                      onClick={() => openModal(image)}
-                    >
-                      {/* Use the same img loading approach that works in the grid */}
-                      <img
-                        src={image.path}
-                        alt={`Fryzura ${image.id}`}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div className="text-center mt-3 text-purple-700">
-                      {image.id} / 10
-                    </div>
-                  </div>
-                ))}
-              </Slider>
-              
-              {/* Right arrow */}
-              <button
-                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-purple-600 text-white rounded-full p-2 shadow-lg hover:bg-purple-700 transition-colors"
-                onClick={goNext}
-                aria-label="Następne zdjęcie"
-              >
-                <ChevronRightIcon className="h-6 w-6" />
-              </button>
-            </div>
-            
-            <div className="mt-8 text-center">
+ {/* All Photos Grid Section */}
+      <section id="allPhotos" className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+ <div className="mt-8 text-center">
               <button
                 onClick={() => document.getElementById('allPhotos').scrollIntoView({ behavior: 'smooth' })}
                 className="inline-flex items-center justify-center px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-300 shadow-md"
@@ -171,13 +81,9 @@ const Galeria = () => {
                 Zobacz wszystkie zdjęcia
               </button>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* All Photos Grid Section */}
-      <section id="allPhotos" className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
+          <ImageSlider 
+            imagePaths={images} 
+            openModal={openModal} /> {/* Pass images array to ImageSlider */}
           <h2 className="text-3xl font-playfair text-purple-900 mb-6 text-center">
             Wszystkie nasze realizacje
           </h2>
@@ -283,15 +189,6 @@ const Galeria = () => {
         </div>
       )}
 
-      {/* Custom styles for the carousel */}
-      <style jsx>{`
-        .gallery-slider .slick-slide {
-          transition: transform 0.3s ease;
-        }
-        .gallery-slider .slick-center {
-          transform: scale(1.05);
-        }
-      `}</style>
     </>
   );
 };
