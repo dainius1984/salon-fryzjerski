@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { sliderData } from './data/sliderData';
 
@@ -237,3 +238,18 @@ const ImageSlider = () => {
 };
 
 export default ImageSlider;
+=======
+import React from 'react';
+
+function ImageSlider({ imagePaths }) {
+  return (
+    <div className="image-grid">
+      {imagePaths.map((imagePath, index) => (
+        <img key={index} src={imagePath} alt={`Gallery image ${index}`} className="grid-item" />
+      ))}
+    </div>
+  );
+}
+
+export default ImageSlider;
+>>>>>>> 59af315acf1995a7f84bf86d1ddd55328152ad06

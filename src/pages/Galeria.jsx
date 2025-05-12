@@ -5,9 +5,14 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ContactMap from '../components/ContactMap';
 import SEO from '../components/SEO';
+<<<<<<< HEAD
 import ImageSlider from '../components/ImageSlider';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
+=======
+import ImageSlider from '../components/ImageSlider'; // Import the new component
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+>>>>>>> 59af315acf1995a7f84bf86d1ddd55328152ad06
 
 const Galeria = () => {
   const [modalImage, setModalImage] = useState(null);
@@ -56,7 +61,33 @@ const Galeria = () => {
       });
   }, []);
 
+<<<<<<< HEAD
   // Open fullscreen image view
+=======
+  const sliderRef = useRef(null);
+ const [modalImage, setModalImage] = useState(null);
+  // Generate array of image paths from 1 to 95
+  const images = Array.from({ length: 95 }, (_, i) => ({
+    id: i + 1,
+    path: `/img/haircut/${String(i + 1).padStart(2, '0')}.jpg`
+  }));
+
+  // Go to previous slide
+  const goPrev = () => {
+    if (sliderRef.current) {
+      sliderRef.current.slickPrev();
+    }
+  };
+
+  // Go to next slide
+  const goNext = () => {
+    if (sliderRef.current) {
+      sliderRef.current.slickNext();
+    }
+  };
+
+  // Otwórz zdjęcie w trybie pełnoekranowym
+>>>>>>> 59af315acf1995a7f84bf86d1ddd55328152ad06
   const openModal = (image) => {
     setModalImage(image);
     document.body.style.overflow = 'hidden';
@@ -66,6 +97,7 @@ const Galeria = () => {
   const closeModal = () => {
     setModalImage(null);
     document.body.style.overflow = 'auto';
+<<<<<<< HEAD
   };
 
   // Display all images in grid
@@ -91,6 +123,8 @@ const Galeria = () => {
   );
 
   return (
+=======
+>>>>>>> 59af315acf1995a7f84bf86d1ddd55328152ad06
     <>
       <SEO 
         title="Galeria Fryzur - Salon Fryzjerski u Małgosi we Wrocławiu"
@@ -114,6 +148,7 @@ const Galeria = () => {
             </p>
           </div>
 
+<<<<<<< HEAD
           {/* Image Slider integrated directly here with reduced height */}
           {imagesLoaded && images.length > 0 ? (
             <div className="max-w-5xl mx-auto">
@@ -140,6 +175,22 @@ const Galeria = () => {
       {/* All Photos Grid Section */}
       <section id="allPhotos" className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
+=======
+ {/* All Photos Grid Section */}
+      <section id="allPhotos" className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+ <div className="mt-8 text-center">
+              <button
+                onClick={() => document.getElementById('allPhotos').scrollIntoView({ behavior: 'smooth' })}
+                className="inline-flex items-center justify-center px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-300 shadow-md"
+              >
+                Zobacz wszystkie zdjęcia
+              </button>
+            </div>
+          <ImageSlider 
+            imagePaths={images} 
+            openModal={openModal} /> {/* Pass images array to ImageSlider */}
+>>>>>>> 59af315acf1995a7f84bf86d1ddd55328152ad06
           <h2 className="text-3xl font-playfair text-purple-900 mb-6 text-center">
             Wszystkie nasze realizacje
           </h2>
@@ -246,6 +297,10 @@ const Galeria = () => {
           </div>
         </div>
       )}
+<<<<<<< HEAD
+=======
+
+>>>>>>> 59af315acf1995a7f84bf86d1ddd55328152ad06
     </>
   );
 };
