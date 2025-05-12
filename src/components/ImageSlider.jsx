@@ -180,8 +180,8 @@ const ImageSlider = () => {
       <div className={`w-full h-full grid grid-cols-1 md:grid-cols-2 items-center overflow-hidden relative ${slideInfo.bgColor}`}>
         <div ref={bgRef} className="bg-purple-900 bg-opacity-40 w-full md:w-3/5 h-full absolute md:skew-x-[7deg] md:left-[-10%] bottom-0 md:transform-origin-bottom-left z-0"></div>
         
-        <div className="p-5 md:pl-24 z-10 col-span-1 row-span-full text-center md:text-left flex flex-col items-center md:items-start justify-center">
-          <h1 ref={h1Ref} className="text-2xl md:text-3xl font-medium mb-2 text-white">{slideInfo.title}</h1>
+        <div className="p-4 md:pl-24 z-10 col-span-1 row-span-full text-center md:text-left flex flex-col items-center md:items-start justify-start pt-4 md:justify-center">
+          <h1 ref={h1Ref} className="text-xl md:text-3xl font-medium mb-2 text-white">{slideInfo.title}</h1>
           
           {/* Only show description on non-mobile devices */}
           <p className="text-sm md:text-base text-purple-100 mb-6 hidden md:inline-block md:mr-12">
@@ -199,7 +199,7 @@ const ImageSlider = () => {
         
         <div className="col-span-1 md:col-start-2 flex justify-center items-center">
           {randomImages[index] && (
-            <div className="relative h-48 w-36 md:h-64 md:w-48 rounded-lg overflow-hidden">
+            <div className="relative h-64 w-52 md:h-64 md:w-48 rounded-lg overflow-hidden">
               <img 
                 src={randomImages[index]} 
                 alt={`Slide ${index + 1}`} 
@@ -213,28 +213,13 @@ const ImageSlider = () => {
     );
   };
 
-  // Mobile indicator dots
-  const renderIndicators = () => {
-    return (
-      <div className="absolute bottom-3 left-0 right-0 flex justify-center space-x-2 z-20">
-        {[0, 1, 2, 3, 4].map((index) => (
-          <div 
-            key={index} 
-            className={`w-2 h-2 rounded-full transition-all duration-300 cursor-pointer ${trailValue === index ? 'bg-white scale-125' : 'bg-white bg-opacity-50'}`}
-            onClick={() => {
-              setValue(index * 20);
-            }}
-          />
-        ))}
-      </div>
-    );
-  };
+  // Removed white indicator dots
 
   return (
-    <div className="relative overflow-hidden touch-pan-y rounded-xl bg-purple-900 text-white shadow-xl max-w-screen-xl mx-auto px-6 sm:px-12 md:px-16">
+    <div className="relative overflow-hidden touch-pan-y rounded-xl bg-purple-900 text-white shadow-xl max-w-screen-xl mx-auto px-4 sm:px-12 md:px-16">
       <div 
         ref={sliderRef}
-        className="flex h-64 md:h-[28rem] transition-all duration-300 ease-in" 
+        className="flex h-80 md:h-[28rem] transition-all duration-300 ease-in" 
         style={{ transform: `translateX(-${value}%)`, width: '500%' }}
       >
         {[0, 1, 2, 3, 4].map((index) => (
@@ -244,8 +229,7 @@ const ImageSlider = () => {
         ))}
       </div>
       
-      {/* Mobile indicator dots */}
-      {renderIndicators()}
+      {/* Removed indicator dots */}
       
       {/* Previous button - hidden on smaller screens */}
       <svg 
