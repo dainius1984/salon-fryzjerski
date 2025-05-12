@@ -231,11 +231,12 @@ const ImageSlider = () => {
         
         <div className="col-span-1 md:col-start-2 flex justify-center items-center">
           {randomImages[index] && (
-            <div className="relative h-56 w-48 md:h-64 md:w-48 rounded-lg overflow-hidden">
+            <div className="relative h-56 w-52 md:h-64 md:w-48 rounded-t-lg rounded-b-2xl md:rounded-lg overflow-hidden">
               <img 
                 src={randomImages[index]} 
                 alt={`Slide ${index + 1}`} 
-                className="w-full h-full object-cover object-center"
+                className="w-full h-full object-cover object-center slider-image"
+                style={{ objectPosition: 'center 30%' }}
               />
               <div className="absolute inset-0 bg-purple-900 bg-opacity-30"></div>
             </div>
