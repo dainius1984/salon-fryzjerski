@@ -1,4 +1,5 @@
-// src/components/Navbar.js
+// Fixed Navbar component with Galeria page logo fix
+
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -43,13 +44,16 @@ const Navbar = ({ transparent = false }) => {
     { name: 'Kontakt', href: '/kontakt' },
   ];
 
+  // Detect if we're on the Galeria page to ensure logo always displays
+  const isGaleriaPage = location.pathname === '/galeria';
+
   // Dynamic classes based on transparent prop
-  const navClasses = transparent 
+  const navClasses = transparent && !isGaleriaPage
     ? "transition-all duration-300 text-white" 
     : "bg-gradient-to-r from-purple-900 to-purple-700 text-white shadow-md";
 
   return (
-    <header className={`${navClasses} w-full z-50 ${transparent ? '' : 'fixed'} font-lato`}>
+    <header className={`${navClasses} w-full z-50 ${transparent && !isGaleriaPage ? '' : 'fixed'} font-lato`}>
       <nav className="container mx-auto px-4 py-3 flex flex-wrap items-center justify-between">
         
         {/* Mobile layout: Hamburger Menu | Logo | Text (in 2 lines) */}
@@ -62,10 +66,10 @@ const Navbar = ({ transparent = false }) => {
             <svg className="fill-current h-5 w-5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
           </button>
           
-          {/* Logo/Site Title - Center on mobile, left on desktop */}
+          {/* Logo/Site Title - Center on mobile, left on desktop - Always visible now */}
           <Link to="/" className="flex items-center space-x-2">
             <img src="/img/logo2.png" alt="Salon Fryzjerski u Małgosi Logo" className="h-12 w-auto" />
-            <div className="font-playfair font-bold text-white"> {/* Removed conditional class, now always white */}
+            <div className="font-playfair font-bold text-white">
               <div className="text-xl leading-tight">Salon Fryzjerski</div>
               <div className="text-xl leading-tight">u Małgosi</div>
             </div>

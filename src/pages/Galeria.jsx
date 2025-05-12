@@ -1,290 +1,271 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+// Galeria.js mobile layout fixes
+
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { sliderData } from './data/sliderData';
+import { MapPinIcon, CalendarIcon } from '@heroicons/react/24/outline';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import ContactMap from '../components/ContactMap';
+import SEO from '../components/SEO';
+import ImageSlider from '../components/ImageSlider';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
-const ImageSlider = () => {
-  const [value, setValue] = useState(0);
-  const [trailValue, setTrailValue] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const [randomImages, setRandomImages] = useState([]);
+const Galeria = () => {
+  const [modalImage, setModalImage] = useState(null);
+  const [images, setImages] = useState([]);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
   const sliderRef = useRef(null);
-  const intervalRef = useRef(null);
-  
-  // Generate random image numbers between 1-90
+
+  // Initialize images and preload the first few when component mounts
   useEffect(() => {
-    const getRandomImages = () => {
-      const images = [];
-      for (let i = 0; i < 5; i++) {
-        const randomNum = Math.floor(Math.random() * 90) + 1;
-        const paddedNum = randomNum.toString().padStart(2, '0');
-        images.push(`img/haircut/${paddedNum}.jpg`);
-      }
-      return images;
-    };
+    window.scrollTo(0, 0);
+    console.log("Galeria component mounted");
+
+    // Generate array of image paths from 1 to 95
+    const imageArray = Array.from({ length: 95 }, (_, i) => {
+      const id = i + 1;
+      const filename = String(id).padStart(2, '0');
+      return {
+        id,
+        path: `/img/haircut/${filename}.jpg`
+      };
+    });
     
-    setRandomImages(getRandomImages());
-  }, []);
-  
-  // Handle slide change - using useCallback to fix the dependency warning
-  const slide = useCallback((condition) => {
-    if (isTransitioning) return;
+    setImages(imageArray);
     
-    clearInterval(intervalRef.current);
-    setIsTransitioning(true);
-    
-    if (condition === "increase") {
-      setValue(prevValue => {
-        // Smooth transition logic
-        if (prevValue === 80) {
-          return 0;
-        } else {
-          return prevValue + 20;
-        }
+    // Preload first 3 images for better initial load experience
+    const preloadImages = imageArray.slice(0, 3).map(image => {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.src = image.path;
+        img.onload = () => resolve();
+        img.onerror = () => {
+          console.error(`Failed to load image: ${image.path}`);
+          resolve();
+        };
       });
-    } else {
-      setValue(prevValue => prevValue === 0 ? 80 : prevValue - 20);
+    });
+    
+    Promise.all(preloadImages)
+      .then(() => {
+        setImagesLoaded(true);
+        console.log("Initial images preloaded");
+      })
+      .catch(error => {
+        console.error("Error preloading images:", error);
+        // Even if there's an error, set images as loaded to prevent infinite loading state
+        setImagesLoaded(true);
+      });
+  }, []);
+
+  // Navigation functions for slider
+  const goPrev = () => {
+    if (sliderRef.current) {
+      sliderRef.current.slickPrev();
     }
-    
-    // Reset transitioning state after animation completes
-    setTimeout(() => {
-      setIsTransitioning(false);
-    }, 400);
-    
-    if (!isPaused) {
-      intervalRef.current = setInterval(() => slide("increase"), 4000);
+  };
+
+  const goNext = () => {
+    if (sliderRef.current) {
+      sliderRef.current.slickNext();
     }
-  }, [isPaused, isTransitioning]);
+  };
 
-  // Update trail based on value
-  useEffect(() => {
-    let newTrailValue = 0;
-    
-    if (value === 0) newTrailValue = 0;
-    else if (value === 20) newTrailValue = 1;
-    else if (value === 40) newTrailValue = 2;
-    else if (value === 60) newTrailValue = 3;
-    else newTrailValue = 4;
-    
-    setTrailValue(newTrailValue);
-  }, [value]);
+  // Open fullscreen image view
+  const openModal = (image) => {
+    setModalImage(image);
+    document.body.style.overflow = 'hidden';
+  };
 
-  // Setup interval for automatic sliding
-  useEffect(() => {
-    if (!isPaused) {
-      intervalRef.current = setInterval(() => slide("increase"), 4000);
-    }
-    
-    return () => clearInterval(intervalRef.current);
-  }, [isPaused, slide]);
+  // Close fullscreen image view
+  const closeModal = () => {
+    setModalImage(null);
+    document.body.style.overflow = 'auto';
+  };
 
-  // Improved touch slide functionality - with better mobile scrolling support
-  useEffect(() => {
-    const slider = sliderRef.current;
-    if (!slider) return;
-    
-    let startX, startY, moveX, moveY, changeX, changeY, sliderWidth;
-    let isScrolling = false;
-    let isMobile = window.innerWidth < 768;
-    
-    const touchStart = (e) => {
-      startX = e.touches[0].clientX;
-      startY = e.touches[0].clientY;
-      sliderWidth = slider.clientWidth / 5;
-      setIsPaused(true);
-    };
-    
-    const touchMove = (e) => {
-      moveX = e.touches[0].clientX;
-      moveY = e.touches[0].clientY;
-      changeX = startX - moveX;
-      changeY = startY - moveY;
-      
-      // On mobile, prioritize vertical scrolling if the movement is more vertical than horizontal
-      if (isMobile && !isScrolling && Math.abs(changeY) > Math.abs(changeX) * 1.2) {
-        isScrolling = true;
-        return;
-      }
-      
-      // Only prevent default for horizontal swipes (and not on vertical scrolls)
-      if (!isScrolling && Math.abs(changeX) > 10) {
-        e.preventDefault();
-      }
-    };
-    
-    const touchEnd = () => {
-      // Skip sliding if this was determined to be a scroll
-      if (isScrolling) {
-        [startX, startY, moveX, moveY, changeX, changeY, sliderWidth] = [0, 0, 0, 0, 0, 0, 0];
-        isScrolling = false;
-        setIsPaused(false);
-        return;
-      }
-      
-      if (Math.abs(changeX) > (sliderWidth / 4)) {
-        if (changeX > 0) {
-          slide("increase");
-        } else {
-          slide("decrease");
-        }
-      }
-      
-      // Reset all values
-      [startX, startY, moveX, moveY, changeX, changeY, sliderWidth] = [0, 0, 0, 0, 0, 0, 0];
-      isScrolling = false;
-      setIsPaused(false);
-    };
-    
-    // Listen for window resize to update mobile status
-    const handleResize = () => {
-      isMobile = window.innerWidth < 768;
-    };
-    
-    window.addEventListener('resize', handleResize);
-    slider.addEventListener("touchstart", touchStart, { passive: true });
-    slider.addEventListener("touchmove", touchMove, { passive: false });
-    slider.addEventListener("touchend", touchEnd, { passive: true });
-    
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      slider.removeEventListener("touchstart", touchStart);
-      slider.removeEventListener("touchmove", touchMove);
-      slider.removeEventListener("touchend", touchEnd);
-    };
-  }, [slide]);
-
-  // Animation references
-  const bgRef = useRef(null);
-  const pRef = useRef(null);
-  const h1Ref = useRef(null);
-  const buttonRef = useRef(null);
-
-  // GSAP-like animation effect on slide change
-  useEffect(() => {
-    if (bgRef.current && h1Ref.current && buttonRef.current) {
-      // Reset animations
-      bgRef.current.style.transform = 'translateX(-100%)';
-      bgRef.current.style.opacity = '0';
-      
-      if (pRef.current) {
-        pRef.current.style.opacity = '0';
-      }
-      
-      h1Ref.current.style.opacity = '0';
-      h1Ref.current.style.transform = 'translateY(30px)';
-      buttonRef.current.style.opacity = '0';
-      buttonRef.current.style.transform = 'translateY(-40px)';
-      
-      // Play animations
-      setTimeout(() => {
-        bgRef.current.style.transform = 'translateX(0)';
-        bgRef.current.style.opacity = '1';
-        bgRef.current.style.transition = 'transform 0.6s ease, opacity 0.6s ease';
-      }, 0);
-      
-      if (pRef.current) {
-        setTimeout(() => {
-          pRef.current.style.opacity = '1';
-          pRef.current.style.transition = 'opacity 0.6s ease';
-        }, 300);
-      }
-      
-      setTimeout(() => {
-        h1Ref.current.style.opacity = '1';
-        h1Ref.current.style.transform = 'translateY(0)';
-        h1Ref.current.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-      }, 300);
-      
-      setTimeout(() => {
-        buttonRef.current.style.opacity = '1';
-        buttonRef.current.style.transform = 'translateY(0)';
-        buttonRef.current.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-      }, 200);
-    }
-  }, [trailValue]);
-
-  const renderBoxContent = (index) => {
-    const slideInfo = sliderData[index];
-    
-    return (
-      <div className={`w-full h-full grid grid-cols-1 md:grid-cols-2 items-center overflow-hidden relative ${slideInfo.bgColor}`}>
-        <div ref={bgRef} className="bg-purple-900 bg-opacity-40 w-full md:w-3/5 h-full absolute md:skew-x-[7deg] md:left-[-10%] bottom-0 md:transform-origin-bottom-left z-0"></div>
-        
-        <div className="p-4 md:p-5 md:pl-24 z-10 col-span-1 row-span-full text-center md:text-left flex flex-col items-center md:items-start md:justify-center">
-          {/* Title looks good on both mobile and desktop */}
-          <h1 ref={h1Ref} className="text-xl md:text-3xl font-medium mb-2 text-white">{slideInfo.title}</h1>
-          
-          {/* Description only on desktop */}
-          <p ref={pRef} className="hidden md:inline-block text-sm md:text-base text-purple-100 mb-6 md:mr-12">
-            {slideInfo.description}
-          </p>
-          
-          {/* Button only on desktop */}
-          <Link 
-            to="/kontakt" 
-            ref={buttonRef} 
-            className={`hidden md:inline-block py-2 px-8 text-white rounded-full ${slideInfo.buttonBg} hover:opacity-80 transition-opacity duration-300`}
-          >
-            {slideInfo.buttonText}
-          </Link>
+  // Display all images in grid
+  const allImages = () => (
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 my-8">
+      {images.map((image) => (
+        <div 
+          key={image.id} 
+          className="aspect-[3/4] rounded-lg overflow-hidden shadow-md cursor-pointer transform transition-transform hover:scale-105 hover:shadow-lg"
+          onClick={() => openModal(image)}
+        >
+          <LazyLoadImage
+            src={image.path}
+            alt={`Fryzura ${image.id}`}
+            effect="blur"
+            className="w-full h-full object-cover"
+            threshold={300}
+            visibleByDefault={image.id <= 3} // Immediately show first 3 images
+          />
         </div>
-        
-        <div className="col-span-1 md:col-start-2 flex justify-center items-center">
-          {randomImages[index] && (
-            <div className="relative h-56 w-52 md:h-64 md:w-48 rounded-t-lg rounded-b-2xl md:rounded-lg overflow-hidden">
-              <img 
-                src={randomImages[index]} 
-                alt={`Slide ${index + 1}`} 
-                className="w-full h-full object-cover object-center slider-image"
-                style={{ objectPosition: 'center 30%' }}
+      ))}
+    </div>
+  );
+
+  return (
+    <>
+      <SEO 
+        title="Galeria Fryzur - Salon Fryzjerski u Małgosi we Wrocławiu"
+        description="Zobacz nasze najlepsze realizacje fryzur. Metamorfozy, strzyżenia, koloryzacje i stylizacje wykonane w Salonie Fryzjerskim u Małgosi we Wrocławiu."
+        keywords="galeria fryzur, fryzury Wrocław, metamorfozy fryzur, koloryzacja włosów, strzyżenie damskie, fryzury męskie"
+        url="/galeria"
+        canonical="/galeria"
+        type="article"
+      />
+      <Navbar />
+      
+      {/* Hero Section with Integrated Slider - Added more bottom padding for mobile */}
+      <section className="pt-28 pb-8 md:pt-32 md:pb-6 bg-purple-900 text-white">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto text-center mb-4">
+            <h1 className="text-3xl md:text-4xl font-playfair text-center mb-3">
+              Nasza Galeria
+            </h1>
+            <p className="text-base md:text-lg text-center text-purple-200 max-w-2xl mx-auto mb-4">
+              Odkryj nasze najlepsze fryzury i metamorfozy. <span className="hidden md:inline">Każde zdjęcie opowiada historię zadowolonego klienta i naszej pasji do fryzjerstwa.</span>
+            </p>
+          </div>
+
+          {imagesLoaded && images.length > 0 ? (
+            <div className="max-w-5xl mx-auto overflow-visible pb-4">
+              <ImageSlider 
+                ref={sliderRef}
+                imagePaths={images} 
+                openModal={openModal}
               />
-              <div className="absolute inset-0 bg-purple-900 bg-opacity-30"></div>
+            </div>
+          ) : (
+            <div className="flex justify-center items-center h-48 mt-4">
+              <div className="w-12 h-12 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin"></div>
+            </div>
+          )}
+          
+          <div className="mt-10 mb-2 text-center">
+            <button
+              onClick={() => document.getElementById('allPhotos').scrollIntoView({ behavior: 'smooth' })}
+              className="inline-flex items-center justify-center px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-300 shadow-lg font-medium text-lg"
+            >
+              Zobacz wszystkie zdjęcia
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* All Photos Grid Section */}
+      <section id="allPhotos" className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-playfair text-purple-900 mb-6 text-center">
+            Wszystkie nasze realizacje
+          </h2>
+          {imagesLoaded ? allImages() : (
+            <div className="flex justify-center items-center h-64">
+              <div className="w-12 h-12 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin"></div>
             </div>
           )}
         </div>
-      </div>
-    );
-  };
+      </section>
 
-  return (
-    <div className="relative md:overflow-hidden overflow-visible rounded-xl bg-purple-900 text-white shadow-xl max-w-screen-xl mx-auto px-4 sm:px-12 md:px-16">
-      <div 
-        ref={sliderRef}
-        className="flex h-72 md:h-[28rem] transition-all duration-300 ease-in" 
-        style={{ transform: `translateX(-${value}%)`, width: '500%' }}
-      >
-        {[0, 1, 2, 3, 4].map((index) => (
-          <div key={index} className="h-full w-full">
-            {renderBoxContent(index)}
+      {/* Description and Buttons Section */}
+      <section className="py-16 bg-purple-50">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-3xl font-playfair text-purple-900 mb-6">
+              Profesjonalne Usługi Fryzjerskie
+            </h2>
+            <p className="text-lg text-purple-700 mb-8">
+              W naszym salonie każda fryzura to dzieło sztuki. Nasz zespół profesjonalistów 
+              dba o najwyższą jakość usług i zadowolenie każdego klienta. Wykorzystujemy 
+              najnowsze trendy i techniki fryzjerskie, aby spełnić Twoje oczekiwania.
+            </p>
+            
+            <div className="flex flex-col md:flex-row gap-6 justify-center">
+              <Link
+                to="/kontakt"
+                className="inline-flex items-center justify-center px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-300 shadow-md"
+              >
+                <CalendarIcon className="w-5 h-5 mr-2" />
+                Umów Wizytę
+              </Link>
+              <button
+                onClick={() => document.getElementById('mapSection').scrollIntoView({ behavior: 'smooth' })}
+                className="inline-flex items-center justify-center px-6 py-3 bg-white text-purple-600 rounded-lg hover:bg-purple-100 transition-colors duration-300 shadow-md"
+              >
+                <MapPinIcon className="w-5 h-5 mr-2" />
+                Gdzie nas znaleźć
+              </button>
+            </div>
           </div>
-        ))}
-      </div>
-      
-      {/* Previous button */}
-      <svg 
-        xmlns="http://www.w3.org/2000/svg" 
-        className="absolute top-1/2 left-2 md:left-4 transform -translate-y-1/2 w-6 md:w-10 cursor-pointer opacity-70 hover:opacity-100 transition-opacity duration-300 z-20"
-        width="56.898" 
-        height="91" 
-        viewBox="0 0 56.898 91"
-        onClick={() => slide("decrease")}
-      >
-        <path d="M45.5,0,91,56.9,48.452,24.068,0,56.9Z" transform="translate(0 91) rotate(-90)" fill="#fff"/>
-      </svg>
-      
-      {/* Next button */}
-      <svg 
-        xmlns="http://www.w3.org/2000/svg" 
-        className="absolute top-1/2 right-2 md:right-4 transform -translate-y-1/2 w-6 md:w-10 cursor-pointer opacity-70 hover:opacity-100 transition-opacity duration-300 z-20"
-        width="56.898" 
-        height="91" 
-        viewBox="0 0 56.898 91"
-        onClick={() => slide("increase")}
-      >
-        <path d="M45.5,0,91,56.9,48.452,24.068,0,56.9Z" transform="translate(56.898) rotate(90)" fill="#fff"/>
-      </svg>
-    </div>
+        </div>
+      </section>
+
+      {/* Map Section */}
+      <section id="mapSection" className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-3xl font-playfair text-purple-900 mb-8 text-center">
+              Lokalizacja Salonu
+            </h2>
+            <ContactMap />
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+
+      {/* Modal for fullscreen images */}
+      {modalImage && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4"
+          onClick={closeModal}
+        >
+          <div className="relative max-w-4xl w-full h-auto">
+            <button 
+              className="absolute top-4 right-4 text-white bg-purple-600 rounded-full p-2 hover:bg-purple-700 focus:outline-none"
+              onClick={closeModal}
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            </button>
+            <img 
+              src={modalImage.path} 
+              alt={`Fryzura ${modalImage.id}`} 
+              className="w-full h-auto object-contain max-h-[80vh]"
+            />
+            <div className="flex justify-between mt-4">
+              <button 
+                className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  const prevIndex = (modalImage.id - 2 + images.length) % images.length;
+                  setModalImage(images[prevIndex]);
+                }}
+              >
+                Poprzednie
+              </button>
+              <span className="text-white text-lg">
+                {modalImage.id} / {images.length}
+              </span>
+              <button 
+                className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  const nextIndex = modalImage.id % images.length;
+                  setModalImage(images[nextIndex]);
+                }}
+              >
+                Następne
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
-export default ImageSlider;
+export default Galeria;
