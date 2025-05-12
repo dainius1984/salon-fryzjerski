@@ -124,7 +124,7 @@ const Galeria = () => {
               Nasza Galeria
             </h1>
             <p className="text-base md:text-lg text-center text-purple-200 max-w-2xl mx-auto mb-4">
-              Odkryj nasze najlepsze fryzury i metamorfozy. Każde zdjęcie opowiada historię zadowolonego klienta i naszej pasji do fryzjerstwa.
+              Odkryj nasze najlepsze fryzury i metamorfozy. <span className="hidden md:inline">Każde zdjęcie opowiada historię zadowolonego klienta i naszej pasji do fryzjerstwa.</span>
             </p>
           </div>
 
