@@ -85,33 +85,52 @@ const ImageSlider = () => {
     
     let startX, startY, moveX, moveY, changeX, changeY, sliderWidth;
     let isScrolling = false;
+    let touchStartTime = 0;
     
     const touchStart = (e) => {
       startX = e.touches[0].clientX;
       startY = e.touches[0].clientY;
       sliderWidth = slider.clientWidth / 5;
+      touchStartTime = Date.now();
       setIsPaused(true);
     };
     
     const touchMove = (e) => {
+      // Don't do anything if we've determined this is a scroll
+      if (isScrolling) return;
+      
       moveX = e.touches[0].clientX;
       moveY = e.touches[0].clientY;
       changeX = startX - moveX;
       changeY = startY - moveY;
       
-      // Determine if user is trying to scroll vertically
-      if (!isScrolling && Math.abs(changeY) > Math.abs(changeX)) {
+      // If primarily vertical movement, let the document scroll
+      if (Math.abs(changeY) > Math.abs(changeX) * 1.2) {
         isScrolling = true;
+        return;
       }
       
-      // Only prevent default if horizontal swiping (not scrolling)
-      if (!isScrolling) {
+      // Only prevent default for horizontal movement
+      if (Math.abs(changeX) > Math.abs(changeY) * 0.8) {
         e.preventDefault();
       }
     };
     
-    const touchEnd = () => {
-      if (!isScrolling && Math.abs(changeX) > (sliderWidth / 4)) {
+    const touchEnd = (e) => {
+      // Don't trigger slide if was scrolling
+      if (isScrolling) {
+        [startX, startY, moveX, moveY, changeX, changeY, sliderWidth] = [0, 0, 0, 0, 0, 0, 0];
+        isScrolling = false;
+        setIsPaused(false);
+        return;
+      }
+      
+      // Calculate swipe duration
+      const touchDuration = Date.now() - touchStartTime;
+      
+      // If it was a quick swipe or moved enough distance
+      if ((touchDuration < 300 && Math.abs(changeX) > sliderWidth / 10) || 
+          Math.abs(changeX) > sliderWidth / 4) {
         if (changeX > 0) {
           slide("increase");
         } else {
@@ -180,14 +199,17 @@ const ImageSlider = () => {
       <div className={`w-full h-full grid grid-cols-1 md:grid-cols-2 items-center overflow-hidden relative ${slideInfo.bgColor}`}>
         <div ref={bgRef} className="bg-purple-900 bg-opacity-40 w-full md:w-3/5 h-full absolute md:skew-x-[7deg] md:left-[-10%] bottom-0 md:transform-origin-bottom-left z-0"></div>
         
-        <div className="p-4 md:pl-24 z-10 col-span-1 row-span-full text-center md:text-left flex flex-col items-center md:items-start justify-start pt-4 md:justify-center">
-          <h1 ref={h1Ref} className="text-xl md:text-3xl font-medium mb-2 text-white">{slideInfo.title}</h1>
+        {/* Title and button section */}
+        <div className="p-4 md:pl-24 z-10 col-span-1 row-span-full text-center md:text-left flex flex-col items-center md:items-start justify-start md:justify-center">
+          {/* Only show title on mobile */}
+          <h1 ref={h1Ref} className="text-lg md:text-3xl font-medium mb-0 md:mb-2 text-white">{slideInfo.title}</h1>
           
-          {/* Only show description on non-mobile devices */}
+          {/* Completely hidden on mobile */}
           <p className="text-sm md:text-base text-purple-100 mb-6 hidden md:inline-block md:mr-12">
             {slideInfo.description}
           </p>
           
+          {/* Button - hidden on mobile */}
           <Link 
             to="/kontakt" 
             ref={buttonRef} 
@@ -197,9 +219,10 @@ const ImageSlider = () => {
           </Link>
         </div>
         
+        {/* Image section */}
         <div className="col-span-1 md:col-start-2 flex justify-center items-center">
           {randomImages[index] && (
-            <div className="relative h-64 w-52 md:h-64 md:w-48 rounded-lg overflow-hidden">
+            <div className="relative h-52 w-44 md:h-64 md:w-48 rounded-lg overflow-hidden">
               <img 
                 src={randomImages[index]} 
                 alt={`Slide ${index + 1}`} 
@@ -213,13 +236,11 @@ const ImageSlider = () => {
     );
   };
 
-  // Removed white indicator dots
-
   return (
-    <div className="relative overflow-hidden touch-pan-y rounded-xl bg-purple-900 text-white shadow-xl max-w-screen-xl mx-auto px-4 sm:px-12 md:px-16">
+    <div className="relative overflow-visible touch-auto rounded-xl bg-purple-900 text-white shadow-xl max-w-screen-xl mx-auto px-4 sm:px-12 md:px-16 pointer-events-auto">
       <div 
         ref={sliderRef}
-        className="flex h-80 md:h-[28rem] transition-all duration-300 ease-in" 
+        className="flex h-72 md:h-[28rem] transition-all duration-300 ease-in" 
         style={{ transform: `translateX(-${value}%)`, width: '500%' }}
       >
         {[0, 1, 2, 3, 4].map((index) => (
@@ -229,9 +250,7 @@ const ImageSlider = () => {
         ))}
       </div>
       
-      {/* Removed indicator dots */}
-      
-      {/* Previous button - hidden on smaller screens */}
+      {/* Previous button */}
       <svg 
         xmlns="http://www.w3.org/2000/svg" 
         className="absolute top-1/2 left-2 md:left-4 transform -translate-y-1/2 w-6 md:w-10 cursor-pointer opacity-70 hover:opacity-100 transition-opacity duration-300 z-20"
@@ -243,7 +262,7 @@ const ImageSlider = () => {
         <path d="M45.5,0,91,56.9,48.452,24.068,0,56.9Z" transform="translate(0 91) rotate(-90)" fill="#fff"/>
       </svg>
       
-      {/* Next button - hidden on smaller screens */}
+      {/* Next button */}
       <svg 
         xmlns="http://www.w3.org/2000/svg" 
         className="absolute top-1/2 right-2 md:right-4 transform -translate-y-1/2 w-6 md:w-10 cursor-pointer opacity-70 hover:opacity-100 transition-opacity duration-300 z-20"
