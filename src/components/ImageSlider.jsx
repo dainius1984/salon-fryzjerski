@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { sliderData } from './data/sliderData';
 
 const ImageSlider = () => {
@@ -171,12 +172,16 @@ const ImageSlider = () => {
         
         <div className="p-5 md:pl-24 z-10 col-span-1 row-span-full md:text-left text-center md:transform-none transform -translate-y-8">
           <h1 ref={h1Ref} className="text-3xl font-medium mb-2 text-white">{slideInfo.title}</h1>
-          <p ref={pRef} className="text-sm text-purple-100 mb-6 inline-block md:mr-12">
+          <p ref={pRef} className="text-sm md:text-base text-purple-100 mb-6 inline-block md:mr-12">
             {slideInfo.description}
           </p>
-          <button ref={buttonRef} className={`py-2 px-8 text-white rounded-full ${slideInfo.buttonBg} hover:opacity-80 transition-opacity duration-300`}>
+          <Link 
+            to="/kontakt" 
+            ref={buttonRef} 
+            className={`inline-block py-2 px-8 text-white rounded-full ${slideInfo.buttonBg} hover:opacity-80 transition-opacity duration-300`}
+          >
             {slideInfo.buttonText}
-          </button>
+          </Link>
         </div>
         
         <div className="col-span-1 md:col-start-2 flex justify-center items-center">
@@ -196,7 +201,7 @@ const ImageSlider = () => {
   };
 
   return (
-    <div className="relative overflow-hidden rounded-xl bg-purple-900 text-white shadow-xl max-w-screen-xl mx-auto">
+    <div className="relative overflow-hidden rounded-xl bg-purple-900 text-white shadow-xl max-w-screen-xl mx-auto px-12 sm:px-16">
       <div 
         ref={sliderRef}
         className="flex h-[22rem] md:h-[28rem] transition-all duration-300 ease-in" 
@@ -212,7 +217,7 @@ const ImageSlider = () => {
       {/* Previous button */}
       <svg 
         xmlns="http://www.w3.org/2000/svg" 
-        className="absolute top-1/2 left-4 transform -translate-y-1/2 w-12 cursor-pointer opacity-70 hover:opacity-100 transition-opacity duration-300 z-20 hidden md:block" 
+        className="absolute top-1/2 left-4 transform -translate-y-1/2 w-8 sm:w-12 cursor-pointer opacity-70 hover:opacity-100 transition-opacity duration-300 z-20"
         width="56.898" 
         height="91" 
         viewBox="0 0 56.898 91"
@@ -224,7 +229,7 @@ const ImageSlider = () => {
       {/* Next button */}
       <svg 
         xmlns="http://www.w3.org/2000/svg" 
-        className="absolute top-1/2 right-4 transform -translate-y-1/2 w-12 cursor-pointer opacity-70 hover:opacity-100 transition-opacity duration-300 z-20 hidden md:block" 
+        className="absolute top-1/2 right-4 transform -translate-y-1/2 w-8 sm:w-12 cursor-pointer opacity-70 hover:opacity-100 transition-opacity duration-300 z-20"
         width="56.898" 
         height="91" 
         viewBox="0 0 56.898 91"
