@@ -78,46 +78,42 @@ const ImageSlider = () => {
     return () => clearInterval(intervalRef.current);
   }, [isPaused, slide]);
 
-  // Improved touch slide functionality with better scrolling detection
+  // Improved touch slide functionality - with better mobile scrolling support
   useEffect(() => {
     const slider = sliderRef.current;
     if (!slider) return;
     
     let startX, startY, moveX, moveY, changeX, changeY, sliderWidth;
     let isScrolling = false;
-    let touchStartTime = 0;
+    let isMobile = window.innerWidth < 768;
     
     const touchStart = (e) => {
       startX = e.touches[0].clientX;
       startY = e.touches[0].clientY;
       sliderWidth = slider.clientWidth / 5;
-      touchStartTime = Date.now();
       setIsPaused(true);
     };
     
     const touchMove = (e) => {
-      // Don't do anything if we've determined this is a scroll
-      if (isScrolling) return;
-      
       moveX = e.touches[0].clientX;
       moveY = e.touches[0].clientY;
       changeX = startX - moveX;
       changeY = startY - moveY;
       
-      // If primarily vertical movement, let the document scroll
-      if (Math.abs(changeY) > Math.abs(changeX) * 1.2) {
+      // On mobile, prioritize vertical scrolling if the movement is more vertical than horizontal
+      if (isMobile && !isScrolling && Math.abs(changeY) > Math.abs(changeX) * 1.2) {
         isScrolling = true;
         return;
       }
       
-      // Only prevent default for horizontal movement
-      if (Math.abs(changeX) > Math.abs(changeY) * 0.8) {
+      // Only prevent default for horizontal swipes (and not on vertical scrolls)
+      if (!isScrolling && Math.abs(changeX) > 10) {
         e.preventDefault();
       }
     };
     
-    const touchEnd = (e) => {
-      // Don't trigger slide if was scrolling
+    const touchEnd = () => {
+      // Skip sliding if this was determined to be a scroll
       if (isScrolling) {
         [startX, startY, moveX, moveY, changeX, changeY, sliderWidth] = [0, 0, 0, 0, 0, 0, 0];
         isScrolling = false;
@@ -125,12 +121,7 @@ const ImageSlider = () => {
         return;
       }
       
-      // Calculate swipe duration
-      const touchDuration = Date.now() - touchStartTime;
-      
-      // If it was a quick swipe or moved enough distance
-      if ((touchDuration < 300 && Math.abs(changeX) > sliderWidth / 10) || 
-          Math.abs(changeX) > sliderWidth / 4) {
+      if (Math.abs(changeX) > (sliderWidth / 4)) {
         if (changeX > 0) {
           slide("increase");
         } else {
@@ -144,11 +135,18 @@ const ImageSlider = () => {
       setIsPaused(false);
     };
     
+    // Listen for window resize to update mobile status
+    const handleResize = () => {
+      isMobile = window.innerWidth < 768;
+    };
+    
+    window.addEventListener('resize', handleResize);
     slider.addEventListener("touchstart", touchStart, { passive: true });
     slider.addEventListener("touchmove", touchMove, { passive: false });
     slider.addEventListener("touchend", touchEnd, { passive: true });
     
     return () => {
+      window.removeEventListener('resize', handleResize);
       slider.removeEventListener("touchstart", touchStart);
       slider.removeEventListener("touchmove", touchMove);
       slider.removeEventListener("touchend", touchEnd);
@@ -157,6 +155,7 @@ const ImageSlider = () => {
 
   // Animation references
   const bgRef = useRef(null);
+  const pRef = useRef(null);
   const h1Ref = useRef(null);
   const buttonRef = useRef(null);
 
@@ -166,6 +165,11 @@ const ImageSlider = () => {
       // Reset animations
       bgRef.current.style.transform = 'translateX(-100%)';
       bgRef.current.style.opacity = '0';
+      
+      if (pRef.current) {
+        pRef.current.style.opacity = '0';
+      }
+      
       h1Ref.current.style.opacity = '0';
       h1Ref.current.style.transform = 'translateY(30px)';
       buttonRef.current.style.opacity = '0';
@@ -177,6 +181,13 @@ const ImageSlider = () => {
         bgRef.current.style.opacity = '1';
         bgRef.current.style.transition = 'transform 0.6s ease, opacity 0.6s ease';
       }, 0);
+      
+      if (pRef.current) {
+        setTimeout(() => {
+          pRef.current.style.opacity = '1';
+          pRef.current.style.transition = 'opacity 0.6s ease';
+        }, 300);
+      }
       
       setTimeout(() => {
         h1Ref.current.style.opacity = '1';
@@ -199,17 +210,16 @@ const ImageSlider = () => {
       <div className={`w-full h-full grid grid-cols-1 md:grid-cols-2 items-center overflow-hidden relative ${slideInfo.bgColor}`}>
         <div ref={bgRef} className="bg-purple-900 bg-opacity-40 w-full md:w-3/5 h-full absolute md:skew-x-[7deg] md:left-[-10%] bottom-0 md:transform-origin-bottom-left z-0"></div>
         
-        {/* Title and button section */}
-        <div className="p-4 md:pl-24 z-10 col-span-1 row-span-full text-center md:text-left flex flex-col items-center md:items-start justify-start md:justify-center">
-          {/* Only show title on mobile */}
-          <h1 ref={h1Ref} className="text-lg md:text-3xl font-medium mb-0 md:mb-2 text-white">{slideInfo.title}</h1>
+        <div className="p-4 md:p-5 md:pl-24 z-10 col-span-1 row-span-full text-center md:text-left flex flex-col items-center md:items-start md:justify-center">
+          {/* Title looks good on both mobile and desktop */}
+          <h1 ref={h1Ref} className="text-xl md:text-3xl font-medium mb-2 text-white">{slideInfo.title}</h1>
           
-          {/* Completely hidden on mobile */}
-          <p className="text-sm md:text-base text-purple-100 mb-6 hidden md:inline-block md:mr-12">
+          {/* Description only on desktop */}
+          <p ref={pRef} className="hidden md:inline-block text-sm md:text-base text-purple-100 mb-6 md:mr-12">
             {slideInfo.description}
           </p>
           
-          {/* Button - hidden on mobile */}
+          {/* Button only on desktop */}
           <Link 
             to="/kontakt" 
             ref={buttonRef} 
@@ -219,10 +229,9 @@ const ImageSlider = () => {
           </Link>
         </div>
         
-        {/* Image section */}
         <div className="col-span-1 md:col-start-2 flex justify-center items-center">
           {randomImages[index] && (
-            <div className="relative h-52 w-44 md:h-64 md:w-48 rounded-lg overflow-hidden">
+            <div className="relative h-56 w-48 md:h-64 md:w-48 rounded-lg overflow-hidden">
               <img 
                 src={randomImages[index]} 
                 alt={`Slide ${index + 1}`} 
@@ -237,7 +246,7 @@ const ImageSlider = () => {
   };
 
   return (
-    <div className="relative overflow-visible touch-auto rounded-xl bg-purple-900 text-white shadow-xl max-w-screen-xl mx-auto px-4 sm:px-12 md:px-16 pointer-events-auto">
+    <div className="relative md:overflow-hidden overflow-visible rounded-xl bg-purple-900 text-white shadow-xl max-w-screen-xl mx-auto px-4 sm:px-12 md:px-16">
       <div 
         ref={sliderRef}
         className="flex h-72 md:h-[28rem] transition-all duration-300 ease-in" 
