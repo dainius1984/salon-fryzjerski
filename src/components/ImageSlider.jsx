@@ -78,39 +78,56 @@ const ImageSlider = () => {
     return () => clearInterval(intervalRef.current);
   }, [isPaused, slide]);
 
-  // Touch slide functionality
+  // Improved touch slide functionality with better scrolling detection
   useEffect(() => {
     const slider = sliderRef.current;
     if (!slider) return;
     
-    let start, move, change, sliderWidth;
+    let startX, startY, moveX, moveY, changeX, changeY, sliderWidth;
+    let isScrolling = false;
     
     const touchStart = (e) => {
-      start = e.touches[0].clientX;
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
       sliderWidth = slider.clientWidth / 5;
       setIsPaused(true);
     };
     
     const touchMove = (e) => {
-      e.preventDefault();
-      move = e.touches[0].clientX;
-      change = start - move;
+      moveX = e.touches[0].clientX;
+      moveY = e.touches[0].clientY;
+      changeX = startX - moveX;
+      changeY = startY - moveY;
+      
+      // Determine if user is trying to scroll vertically
+      if (!isScrolling && Math.abs(changeY) > Math.abs(changeX)) {
+        isScrolling = true;
+      }
+      
+      // Only prevent default if horizontal swiping (not scrolling)
+      if (!isScrolling) {
+        e.preventDefault();
+      }
     };
     
     const touchEnd = () => {
-      if (change > (sliderWidth / 4)) {
-        slide("increase");
-      } else if ((change * -1) > (sliderWidth / 4)) {
-        slide("decrease");
+      if (!isScrolling && Math.abs(changeX) > (sliderWidth / 4)) {
+        if (changeX > 0) {
+          slide("increase");
+        } else {
+          slide("decrease");
+        }
       }
       
-      [start, move, change, sliderWidth] = [0, 0, 0, 0];
+      // Reset all values
+      [startX, startY, moveX, moveY, changeX, changeY, sliderWidth] = [0, 0, 0, 0, 0, 0, 0];
+      isScrolling = false;
       setIsPaused(false);
     };
     
-    slider.addEventListener("touchstart", touchStart);
-    slider.addEventListener("touchmove", touchMove);
-    slider.addEventListener("touchend", touchEnd);
+    slider.addEventListener("touchstart", touchStart, { passive: true });
+    slider.addEventListener("touchmove", touchMove, { passive: false });
+    slider.addEventListener("touchend", touchEnd, { passive: true });
     
     return () => {
       slider.removeEventListener("touchstart", touchStart);
@@ -121,17 +138,15 @@ const ImageSlider = () => {
 
   // Animation references
   const bgRef = useRef(null);
-  const pRef = useRef(null);
   const h1Ref = useRef(null);
   const buttonRef = useRef(null);
 
   // GSAP-like animation effect on slide change
   useEffect(() => {
-    if (bgRef.current && pRef.current && h1Ref.current && buttonRef.current) {
+    if (bgRef.current && h1Ref.current && buttonRef.current) {
       // Reset animations
       bgRef.current.style.transform = 'translateX(-100%)';
       bgRef.current.style.opacity = '0';
-      pRef.current.style.opacity = '0';
       h1Ref.current.style.opacity = '0';
       h1Ref.current.style.transform = 'translateY(30px)';
       buttonRef.current.style.opacity = '0';
@@ -143,11 +158,6 @@ const ImageSlider = () => {
         bgRef.current.style.opacity = '1';
         bgRef.current.style.transition = 'transform 0.6s ease, opacity 0.6s ease';
       }, 0);
-      
-      setTimeout(() => {
-        pRef.current.style.opacity = '1';
-        pRef.current.style.transition = 'opacity 0.6s ease';
-      }, 300);
       
       setTimeout(() => {
         h1Ref.current.style.opacity = '1';
@@ -168,17 +178,20 @@ const ImageSlider = () => {
     
     return (
       <div className={`w-full h-full grid grid-cols-1 md:grid-cols-2 items-center overflow-hidden relative ${slideInfo.bgColor}`}>
-        <div ref={bgRef} className="bg-purple-900 bg-opacity-40 w-full md:w-3/5 h-full md:h-full absolute md:skew-x-[7deg] md:left-[-10%] bottom-0 md:transform-origin-bottom-left z-0"></div>
+        <div ref={bgRef} className="bg-purple-900 bg-opacity-40 w-full md:w-3/5 h-full absolute md:skew-x-[7deg] md:left-[-10%] bottom-0 md:transform-origin-bottom-left z-0"></div>
         
-        <div className="p-5 md:pl-24 z-10 col-span-1 row-span-full md:text-left text-center md:transform-none transform -translate-y-8">
-          <h1 ref={h1Ref} className="text-3xl font-medium mb-2 text-white">{slideInfo.title}</h1>
-          <p ref={pRef} className="text-sm md:text-base text-purple-100 mb-6 inline-block md:mr-12">
+        <div className="p-5 md:pl-24 z-10 col-span-1 row-span-full text-center md:text-left flex flex-col items-center md:items-start justify-center">
+          <h1 ref={h1Ref} className="text-2xl md:text-3xl font-medium mb-2 text-white">{slideInfo.title}</h1>
+          
+          {/* Only show description on non-mobile devices */}
+          <p className="text-sm md:text-base text-purple-100 mb-6 hidden md:inline-block md:mr-12">
             {slideInfo.description}
           </p>
+          
           <Link 
             to="/kontakt" 
             ref={buttonRef} 
-            className={`inline-block py-2 px-8 text-white rounded-full ${slideInfo.buttonBg} hover:opacity-80 transition-opacity duration-300`}
+            className={`hidden md:inline-block py-2 px-8 text-white rounded-full ${slideInfo.buttonBg} hover:opacity-80 transition-opacity duration-300`}
           >
             {slideInfo.buttonText}
           </Link>
@@ -186,7 +199,7 @@ const ImageSlider = () => {
         
         <div className="col-span-1 md:col-start-2 flex justify-center items-center">
           {randomImages[index] && (
-            <div className="relative h-56 w-40 md:h-64 md:w-48 rounded-lg overflow-hidden">
+            <div className="relative h-48 w-36 md:h-64 md:w-48 rounded-lg overflow-hidden">
               <img 
                 src={randomImages[index]} 
                 alt={`Slide ${index + 1}`} 
@@ -200,11 +213,28 @@ const ImageSlider = () => {
     );
   };
 
+  // Mobile indicator dots
+  const renderIndicators = () => {
+    return (
+      <div className="absolute bottom-3 left-0 right-0 flex justify-center space-x-2 z-20">
+        {[0, 1, 2, 3, 4].map((index) => (
+          <div 
+            key={index} 
+            className={`w-2 h-2 rounded-full transition-all duration-300 cursor-pointer ${trailValue === index ? 'bg-white scale-125' : 'bg-white bg-opacity-50'}`}
+            onClick={() => {
+              setValue(index * 20);
+            }}
+          />
+        ))}
+      </div>
+    );
+  };
+
   return (
-    <div className="relative overflow-hidden rounded-xl bg-purple-900 text-white shadow-xl max-w-screen-xl mx-auto px-12 sm:px-16">
+    <div className="relative overflow-hidden touch-pan-y rounded-xl bg-purple-900 text-white shadow-xl max-w-screen-xl mx-auto px-6 sm:px-12 md:px-16">
       <div 
         ref={sliderRef}
-        className="flex h-[22rem] md:h-[28rem] transition-all duration-300 ease-in" 
+        className="flex h-64 md:h-[28rem] transition-all duration-300 ease-in" 
         style={{ transform: `translateX(-${value}%)`, width: '500%' }}
       >
         {[0, 1, 2, 3, 4].map((index) => (
@@ -214,10 +244,13 @@ const ImageSlider = () => {
         ))}
       </div>
       
-      {/* Previous button */}
+      {/* Mobile indicator dots */}
+      {renderIndicators()}
+      
+      {/* Previous button - hidden on smaller screens */}
       <svg 
         xmlns="http://www.w3.org/2000/svg" 
-        className="absolute top-1/2 left-4 transform -translate-y-1/2 w-8 sm:w-12 cursor-pointer opacity-70 hover:opacity-100 transition-opacity duration-300 z-20"
+        className="absolute top-1/2 left-2 md:left-4 transform -translate-y-1/2 w-6 md:w-10 cursor-pointer opacity-70 hover:opacity-100 transition-opacity duration-300 z-20"
         width="56.898" 
         height="91" 
         viewBox="0 0 56.898 91"
@@ -226,10 +259,10 @@ const ImageSlider = () => {
         <path d="M45.5,0,91,56.9,48.452,24.068,0,56.9Z" transform="translate(0 91) rotate(-90)" fill="#fff"/>
       </svg>
       
-      {/* Next button */}
+      {/* Next button - hidden on smaller screens */}
       <svg 
         xmlns="http://www.w3.org/2000/svg" 
-        className="absolute top-1/2 right-4 transform -translate-y-1/2 w-8 sm:w-12 cursor-pointer opacity-70 hover:opacity-100 transition-opacity duration-300 z-20"
+        className="absolute top-1/2 right-2 md:right-4 transform -translate-y-1/2 w-6 md:w-10 cursor-pointer opacity-70 hover:opacity-100 transition-opacity duration-300 z-20"
         width="56.898" 
         height="91" 
         viewBox="0 0 56.898 91"
