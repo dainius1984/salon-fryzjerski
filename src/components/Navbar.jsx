@@ -66,7 +66,7 @@ const Navbar = ({ transparent = false }) => {
           {/* Logo/Site Title - Center on mobile, left on desktop - Always visible now */}
           <Link to="/" className="flex items-center space-x-2">
             <img 
-              src="/img/logo-white.png" 
+              src="/img/logo.png" 
               alt="Salon Fryzjerski u Małgosi Logo" 
               className="h-12 w-auto object-contain" 
             />
