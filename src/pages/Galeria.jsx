@@ -114,7 +114,7 @@ const Galeria = () => {
       <Navbar transparent={false} />
       
       {/* Hero Section with Integrated Slider - Increased bottom padding */}
-      <section className="pt-28 pb-12 md:pt-32 md:pb-8 bg-purple-900 text-white">
+      <section className="pt-8 pb-12 md:pt-32 md:pb-8 bg-purple-900 text-white">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center mb-4">
             <h1 className="text-3xl md:text-4xl font-playfair text-center mb-3">
