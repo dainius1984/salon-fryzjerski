@@ -139,7 +139,7 @@ const Galeria = () => {
             </div>
           )}
           
-          <div className="mt-10 mb-4 text-center">
+          <div className="mt-6 mb-4 text-center">
             <button
               onClick={() => document.getElementById('allPhotos').scrollIntoView({ behavior: 'smooth' })}
               className="inline-flex items-center justify-center px-5 py-2.5 bg-purple-600 text-white text-lg rounded-lg hover:bg-purple-700 transition-colors duration-300 shadow-lg font-medium"
