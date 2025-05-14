@@ -1,5 +1,3 @@
-// Fixed Navbar component with Galeria page logo fix
-
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -8,9 +6,16 @@ const Navbar = ({ transparent = false }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [hoverLink, setHoverLink] = useState(null);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [logoLoaded, setLogoLoaded] = useState(false);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+
+  // Always use white logo on mobile
+  const getLogoSrc = () => {
+    const isMobile = window.innerWidth < 768;
+    return isMobile ? '/img/logo-white.png' : '/img/logo.jpg';
   };
 
   useEffect(() => {
@@ -19,6 +24,16 @@ const Navbar = ({ transparent = false }) => {
     };
 
     window.addEventListener('scroll', handleScroll);
+    
+    // Check if logo exists
+    const img = new Image();
+    img.onload = () => setLogoLoaded(true);
+    img.onerror = () => {
+      console.warn("White logo not found, using default");
+      setLogoLoaded(true);
+    };
+    img.src = '/img/logo-white.png';
+    
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -44,16 +59,14 @@ const Navbar = ({ transparent = false }) => {
     { name: 'Kontakt', href: '/kontakt' },
   ];
 
-  // Detect if we're on the Galeria page to ensure logo always displays
+  // Special case for Galeria page - custom styles
   const isGaleriaPage = location.pathname === '/galeria';
-
-  // Dynamic classes based on transparent prop
-  const navClasses = transparent && !isGaleriaPage
-    ? "transition-all duration-300 text-white" 
-    : "bg-gradient-to-r from-purple-900 to-purple-700 text-white shadow-md";
+  const navClasses = isGaleriaPage 
+    ? "bg-purple-900 text-white shadow-md sticky top-0 z-50" 
+    : (transparent ? "transition-all duration-300 text-white" : "bg-gradient-to-r from-purple-900 to-purple-700 text-white shadow-md");
 
   return (
-    <header className={`${navClasses} w-full z-50 ${transparent && !isGaleriaPage ? '' : 'fixed'} font-lato`}>
+    <header className={`${navClasses} w-full font-lato`}>
       <nav className="container mx-auto px-4 py-3 flex flex-wrap items-center justify-between">
         
         {/* Mobile layout: Hamburger Menu | Logo | Text (in 2 lines) */}
@@ -68,7 +81,15 @@ const Navbar = ({ transparent = false }) => {
           
           {/* Logo/Site Title - Center on mobile, left on desktop - Always visible now */}
           <Link to="/" className="flex items-center space-x-2">
-            <img src="/img/logo2.png" alt="Salon Fryzjerski u Małgosi Logo" className="h-12 w-auto" />
+            {logoLoaded ? (
+              <img 
+                src={getLogoSrc()} 
+                alt="Salon Fryzjerski u Małgosi Logo" 
+                className="h-12 w-auto" 
+              />
+            ) : (
+              <div className="h-12 w-12 bg-white/20 animate-pulse rounded-md"></div>
+            )}
             <div className="font-playfair font-bold text-white">
               <div className="text-xl leading-tight">Salon Fryzjerski</div>
               <div className="text-xl leading-tight">u Małgosi</div>
