@@ -1,5 +1,3 @@
-// Galeria.js mobile layout fixes
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { MapPinIcon, CalendarIcon } from '@heroicons/react/24/outline';
@@ -20,7 +18,6 @@ const Galeria = () => {
   // Initialize images and preload the first few when component mounts
   useEffect(() => {
     window.scrollTo(0, 0);
-    console.log("Galeria component mounted");
 
     // Generate array of image paths from 1 to 95
     const imageArray = Array.from({ length: 95 }, (_, i) => {
@@ -41,7 +38,6 @@ const Galeria = () => {
         img.src = image.path;
         img.onload = () => resolve();
         img.onerror = () => {
-          console.error(`Failed to load image: ${image.path}`);
           resolve();
         };
       });
@@ -50,10 +46,8 @@ const Galeria = () => {
     Promise.all(preloadImages)
       .then(() => {
         setImagesLoaded(true);
-        console.log("Initial images preloaded");
       })
       .catch(error => {
-        console.error("Error preloading images:", error);
         // Even if there's an error, set images as loaded to prevent infinite loading state
         setImagesLoaded(true);
       });
@@ -116,10 +110,11 @@ const Galeria = () => {
         canonical="/galeria"
         type="article"
       />
-      <Navbar />
+      {/* Navbar bez transparent, aby wymusić sticky header na Galeria */}
+      <Navbar transparent={false} />
       
-      {/* Hero Section with Integrated Slider - Added more bottom padding for mobile */}
-      <section className="pt-28 pb-8 md:pt-32 md:pb-6 bg-purple-900 text-white">
+      {/* Hero Section with Integrated Slider - Increased bottom padding */}
+      <section className="pt-28 pb-12 md:pt-32 md:pb-8 bg-purple-900 text-white">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center mb-4">
             <h1 className="text-3xl md:text-4xl font-playfair text-center mb-3">
@@ -131,7 +126,7 @@ const Galeria = () => {
           </div>
 
           {imagesLoaded && images.length > 0 ? (
-            <div className="max-w-5xl mx-auto overflow-visible pb-4">
+            <div className="max-w-5xl mx-auto overflow-visible pb-8">
               <ImageSlider 
                 ref={sliderRef}
                 imagePaths={images} 
@@ -144,10 +139,10 @@ const Galeria = () => {
             </div>
           )}
           
-          <div className="mt-10 mb-2 text-center">
+          <div className="mt-10 mb-4 text-center">
             <button
               onClick={() => document.getElementById('allPhotos').scrollIntoView({ behavior: 'smooth' })}
-              className="inline-flex items-center justify-center px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-300 shadow-lg font-medium text-lg"
+              className="inline-flex items-center justify-center px-5 py-2.5 bg-purple-600 text-white text-lg rounded-lg hover:bg-purple-700 transition-colors duration-300 shadow-lg font-medium"
             >
               Zobacz wszystkie zdjęcia
             </button>

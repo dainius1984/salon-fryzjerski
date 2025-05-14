@@ -6,16 +6,9 @@ const Navbar = ({ transparent = false }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [hoverLink, setHoverLink] = useState(null);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [logoLoaded, setLogoLoaded] = useState(false);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
-  };
-
-  // Always use white logo on mobile
-  const getLogoSrc = () => {
-    const isMobile = window.innerWidth < 768;
-    return isMobile ? '/img/logo-white.png' : '/img/logo.jpg';
   };
 
   useEffect(() => {
@@ -24,16 +17,6 @@ const Navbar = ({ transparent = false }) => {
     };
 
     window.addEventListener('scroll', handleScroll);
-    
-    // Check if logo exists
-    const img = new Image();
-    img.onload = () => setLogoLoaded(true);
-    img.onerror = () => {
-      console.warn("White logo not found, using default");
-      setLogoLoaded(true);
-    };
-    img.src = '/img/logo-white.png';
-    
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -59,11 +42,12 @@ const Navbar = ({ transparent = false }) => {
     { name: 'Kontakt', href: '/kontakt' },
   ];
 
-  // Special case for Galeria page - custom styles
+  // Special case for Galeria page - always use sticky header with purple background
   const isGaleriaPage = location.pathname === '/galeria';
+  
   const navClasses = isGaleriaPage 
     ? "bg-purple-900 text-white shadow-md sticky top-0 z-50" 
-    : (transparent ? "transition-all duration-300 text-white" : "bg-gradient-to-r from-purple-900 to-purple-700 text-white shadow-md");
+    : (transparent ? "transition-all duration-300 text-white" : "bg-gradient-to-r from-purple-900 to-purple-700 text-white shadow-md fixed top-0 left-0 w-full");
 
   return (
     <header className={`${navClasses} w-full font-lato`}>
@@ -81,15 +65,11 @@ const Navbar = ({ transparent = false }) => {
           
           {/* Logo/Site Title - Center on mobile, left on desktop - Always visible now */}
           <Link to="/" className="flex items-center space-x-2">
-            {logoLoaded ? (
-              <img 
-                src={getLogoSrc()} 
-                alt="Salon Fryzjerski u Małgosi Logo" 
-                className="h-12 w-auto" 
-              />
-            ) : (
-              <div className="h-12 w-12 bg-white/20 animate-pulse rounded-md"></div>
-            )}
+            <img 
+              src="/img/logo-white.png" 
+              alt="Salon Fryzjerski u Małgosi Logo" 
+              className="h-12 w-auto object-contain" 
+            />
             <div className="font-playfair font-bold text-white">
               <div className="text-xl leading-tight">Salon Fryzjerski</div>
               <div className="text-xl leading-tight">u Małgosi</div>
