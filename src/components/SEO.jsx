@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet';
 const SEO = ({ 
   title = 'Salon Fryzjerski "U Małgosi" Wrocław', 
   description = 'Profesjonalne usługi fryzjerskie we Wrocławiu. Strzyżenie, koloryzacja, modelowanie i stylizacja włosów dla pań, panów i dzieci.',
-  keywords = 'fryzjer Wrocław, salon fryzjerski, strzyżenie, koloryzacja, salon U Małgosi, fryzura ślubna, balejaż, ombre',
+  keywords = 'fryzjer Wrocław, salon fryzjerski, strzyżenie, koloryzacja, salon U Małgosi, salon u malgosii, salon u malgosi, salon u gosi, fryzjerka malgosia, fryzjerka malgosia stablowice, fryzura ślubna, balejaż, ombre',
   image = '/img/salon-cover.jpg',
   url = '',
   canonical = '',
