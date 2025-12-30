@@ -158,6 +158,11 @@ const EquipmentSection = () => {
 const Uslugi = () => {
   console.log('Uslugi component rendering');
   
+  // Function to scroll to top when navigating
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+  
   // Scroll to top on page load
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -328,6 +333,7 @@ const Uslugi = () => {
             >
               <Link 
                 to="/kontakt" 
+                onClick={scrollToTop}
                 className="inline-block bg-purple-700 hover:bg-purple-800 text-white font-bold py-3 px-8 rounded-full transition duration-300 text-lg"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}

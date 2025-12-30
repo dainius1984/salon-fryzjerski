@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { MapPinIcon, CalendarIcon } from '@heroicons/react/24/outline';
 import Navbar from '../components/Navbar';
@@ -13,7 +13,11 @@ const Galeria = () => {
   const [modalImage, setModalImage] = useState(null);
   const [images, setImages] = useState([]);
   const [imagesLoaded, setImagesLoaded] = useState(false);
-  const sliderRef = useRef(null);
+
+  // Function to scroll to top when navigating
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   // Initialize images and preload the first few when component mounts
   useEffect(() => {
@@ -52,19 +56,6 @@ const Galeria = () => {
         setImagesLoaded(true);
       });
   }, []);
-
-  // Navigation functions for slider
-  const goPrev = () => {
-    if (sliderRef.current) {
-      sliderRef.current.slickPrev();
-    }
-  };
-
-  const goNext = () => {
-    if (sliderRef.current) {
-      sliderRef.current.slickNext();
-    }
-  };
 
   // Open fullscreen image view
   const openModal = (image) => {
@@ -128,7 +119,6 @@ const Galeria = () => {
           {imagesLoaded && images.length > 0 ? (
             <div className="max-w-5xl mx-auto overflow-visible pb-8">
               <ImageSlider 
-                ref={sliderRef}
                 imagePaths={images} 
                 openModal={openModal}
               />
@@ -180,6 +170,7 @@ const Galeria = () => {
             <div className="flex flex-col md:flex-row gap-6 justify-center">
               <Link
                 to="/kontakt"
+                onClick={scrollToTop}
                 className="inline-flex items-center justify-center px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-300 shadow-md"
               >
                 <CalendarIcon className="w-5 h-5 mr-2" />

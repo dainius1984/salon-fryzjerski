@@ -4,6 +4,11 @@ import { Link } from 'react-router-dom';
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   
+  // Function to scroll to top when navigating
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+  
   // Lista metod płatności z ich ścieżkami publicznymi
   const paymentImages = [
     { name: 'BLIK', path: '/img/blik.svg' },
@@ -41,27 +46,27 @@ const Footer = () => {
             <h3 className="text-xl font-bold mb-6 font-playfair tracking-wide">Szybkie linki</h3>
             <ul className="space-y-2 text-purple-100">
               <li className="flex items-center justify-center">
-                <Link to="/" className="hover:text-white hover:underline transition duration-300">
+                <Link to="/" onClick={scrollToTop} className="hover:text-white hover:underline transition duration-300">
                   Strona Główna
                 </Link>
               </li>
               <li className="flex items-center justify-center">
-                <Link to="/uslugi" className="hover:text-white hover:underline transition duration-300">
+                <Link to="/uslugi" onClick={scrollToTop} className="hover:text-white hover:underline transition duration-300">
                   Usługi
                 </Link>
               </li>
               <li className="flex items-center justify-center">
-                <Link to="/cennik" className="hover:text-white hover:underline transition duration-300">
+                <Link to="/cennik" onClick={scrollToTop} className="hover:text-white hover:underline transition duration-300">
                   Cennik
                 </Link>
               </li>
               <li className="flex items-center justify-center">
-                <Link to="/galeria" className="hover:text-white hover:underline transition duration-300">
+                <Link to="/galeria" onClick={scrollToTop} className="hover:text-white hover:underline transition duration-300">
                   Galeria
                 </Link>
               </li>
               <li className="flex items-center justify-center">
-                <Link to="/kontakt" className="hover:text-white hover:underline transition duration-300">
+                <Link to="/kontakt" onClick={scrollToTop} className="hover:text-white hover:underline transition duration-300">
                   Kontakt
                 </Link>
               </li>

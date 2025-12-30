@@ -1,24 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 const Navbar = ({ transparent = false }) => {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [hoverLink, setHoverLink] = useState(null);
-  const [isScrolled, setIsScrolled] = useState(false);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 0);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  // Function to scroll to top when navigating
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   // Determine active link based on current path
   const getActiveLink = () => {
@@ -64,7 +59,7 @@ const Navbar = ({ transparent = false }) => {
           </button>
           
           {/* Logo/Site Title - Center on mobile, left on desktop - Always visible now */}
-          <Link to="/" className="flex items-center space-x-2">
+          <Link to="/" onClick={scrollToTop} className="flex items-center space-x-2">
             <img 
               src="/img/logo2.png" 
               alt="Salon Fryzjerski u Małgosi Logo" 
@@ -87,6 +82,7 @@ const Navbar = ({ transparent = false }) => {
               <Link
                 key={link.name}
                 to={link.href}
+                onClick={scrollToTop}
                 className={`text-white font-lato font-bold text-lg hover:underline decoration-2 underline-offset-4 transition-all duration-200 whitespace-nowrap relative py-1 ${activeLink === link.name ? 'underline' : ''}`}
                 onMouseEnter={() => setHoverLink(link.name)}
                 onMouseLeave={() => setHoverLink(null)}
@@ -121,6 +117,7 @@ const Navbar = ({ transparent = false }) => {
                 onClick={() => {
                   setIsOpen(false);
                   setHoverLink(null);
+                  scrollToTop();
                 }}
               >
                 {link.name}

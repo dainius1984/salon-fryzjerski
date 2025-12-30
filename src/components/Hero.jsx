@@ -3,6 +3,11 @@ import Navbar from './Navbar';
 import { Link } from 'react-router-dom';
 
 const Hero = () => {
+  // Function to scroll to top when navigating
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <section className="relative h-screen overflow-hidden">
       {/* Statyczne tło jako fallback/wsparcie dla wideo */}
@@ -42,10 +47,10 @@ const Hero = () => {
           
           {/* Przyciski CTA */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
-            <Link to="/uslugi" className="bg-purple-700 hover:bg-purple-800 text-white font-bold py-3 px-8 rounded-full transition duration-300 text-lg">
+            <Link to="/uslugi" onClick={scrollToTop} className="bg-purple-700 hover:bg-purple-800 text-white font-bold py-3 px-8 rounded-full transition duration-300 text-lg">
               Sprawdź nasze usługi
             </Link>
-            <Link to="/kontakt" className="bg-transparent hover:bg-white/20 text-white border-2 border-white font-bold py-3 px-8 rounded-full transition duration-300 text-lg">
+            <Link to="/kontakt" onClick={scrollToTop} className="bg-transparent hover:bg-white/20 text-white border-2 border-white font-bold py-3 px-8 rounded-full transition duration-300 text-lg">
               Umów wizytę już dziś
             </Link>
           </div>

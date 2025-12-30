@@ -16,6 +16,11 @@ const priceList = [
 ];
 
 const Cennik = () => {
+  // Function to scroll to top when navigating
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -72,6 +77,7 @@ const Cennik = () => {
           <div className="flex flex-col md:flex-row justify-center items-center gap-6 mb-8">
             <Link
               to="/galeria"
+              onClick={scrollToTop}
               className="inline-block bg-white border-4 border-purple-700 text-purple-700 hover:bg-purple-700 hover:text-white font-bold py-4 px-10 rounded-full transition duration-300 text-xl shadow-lg tracking-wide uppercase"
               style={{ minWidth: '220px', letterSpacing: '0.05em' }}
             >
@@ -79,6 +85,7 @@ const Cennik = () => {
             </Link>
             <Link
               to="/kontakt"
+              onClick={scrollToTop}
               className="inline-block bg-gradient-to-r from-purple-700 to-purple-500 hover:from-purple-800 hover:to-purple-600 text-white font-bold py-4 px-10 rounded-full transition duration-300 text-xl shadow-lg tracking-wide uppercase"
               style={{ minWidth: '220px', letterSpacing: '0.05em' }}
             >
