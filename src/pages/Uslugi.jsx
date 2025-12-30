@@ -283,7 +283,7 @@ const Uslugi = () => {
 
           <VideoSection 
             title="Balejaże i Stylizacje"
-            videoSrc="/videos/highlights.mp4"
+            videoSrc="/videos/balejaz.mp4"
             description={
               <div>
                 <p>Specjalizujemy się w technikach koloryzacji wielowymiarowej:</p>
